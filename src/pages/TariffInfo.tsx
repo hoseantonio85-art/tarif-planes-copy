@@ -58,11 +58,6 @@ const TariffInfo = () => {
     },
   ].filter((card) => card.show);
 
-  const contractFields = [
-    { label: "Номер договора", value: c.contractNumber },
-    { label: "Дата начала оказания услуг", value: c.contractStart },
-    { label: "Дата окончания действия", value: c.contractEnd },
-  ];
 
   return (
     <div className="flex min-h-screen bg-background">
