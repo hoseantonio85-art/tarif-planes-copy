@@ -58,11 +58,6 @@ const TariffInfo = () => {
     },
   ].filter((card) => card.show);
 
-  const contractFields = [
-    { label: "Номер договора", value: c.contractNumber },
-    { label: "Дата начала оказания услуг", value: c.contractStart },
-    { label: "Дата окончания действия", value: c.contractEnd },
-  ];
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -94,6 +89,17 @@ const TariffInfo = () => {
                   <p className="text-sm text-muted-foreground max-w-lg leading-relaxed">
                     Полная доступность к модулям и аналитике системы, использование AI-агентов в рамках установленного лимита.
                   </p>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <span className="inline-flex items-center rounded-md bg-muted text-muted-foreground px-2.5 py-1 text-xs font-medium">
+                      Договор № {c.contractNumber}
+                    </span>
+                    <span className="inline-flex items-center rounded-md bg-muted text-muted-foreground px-2.5 py-1 text-xs font-medium">
+                      С {c.contractStart}
+                    </span>
+                    <span className="inline-flex items-center rounded-md bg-muted text-muted-foreground px-2.5 py-1 text-xs font-medium">
+                      До {c.contractEnd}
+                    </span>
+                  </div>
                 </div>
                 <span
                   className={cn(
@@ -105,7 +111,6 @@ const TariffInfo = () => {
                 </span>
               </div>
 
-              {/* Expiring warning */}
               {c.tariffStatus === "expiring" && (
                 <div className="mt-4 rounded-lg bg-orange-50 border border-orange-200 px-4 py-3">
                   <p className="text-sm text-orange-600 font-medium">
@@ -128,8 +133,8 @@ const TariffInfo = () => {
                     <CardContent className="p-5 space-y-3">
                       <p className="text-sm text-muted-foreground">{card.label}</p>
                       <div className="space-y-1.5">
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-2xl font-semibold text-foreground">
+                      <div className="flex items-baseline gap-1">
+                          <span className="text-3xl font-semibold text-foreground">
                             {card.current}
                           </span>
                           <span className="text-sm text-muted-foreground">
@@ -138,10 +143,10 @@ const TariffInfo = () => {
                         </div>
                         <Progress
                           value={(card.current / card.max) * 100}
-                          className="h-2"
+                          className="h-1.5"
                         />
                       </div>
-                      <p className="text-xs text-muted-foreground">{card.sub}</p>
+                      <p className="text-xs text-muted-foreground/70">{card.sub}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -179,7 +184,7 @@ const TariffInfo = () => {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-base">
-                Активные пользователи ({c.users.length})
+                Активные пользователи — {c.users.length} из {c.maxUsers}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -198,19 +203,32 @@ const TariffInfo = () => {
                 </div>
               )}
               <div className="max-h-[320px] overflow-y-auto space-y-0.5">
-                {filteredUsers.map((user, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted/50"
-                  >
-                    <span className="text-xs text-muted-foreground w-5 text-right">
-                      {i + 1}.
-                    </span>
-                    <span className="text-sm text-foreground">
-                      {user.role} {user.name}
-                    </span>
-                  </div>
-                ))}
+                {filteredUsers.map((user, i) => {
+                  const initials = user.name.split(/[\s.]+/).filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase();
+                  const avatarColors = [
+                    "bg-blue-100 text-blue-700",
+                    "bg-emerald-100 text-emerald-700",
+                    "bg-violet-100 text-violet-700",
+                    "bg-amber-100 text-amber-700",
+                    "bg-rose-100 text-rose-700",
+                    "bg-cyan-100 text-cyan-700",
+                  ];
+                  const colorClass = avatarColors[i % avatarColors.length];
+                  return (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted/50"
+                    >
+                      <div className={cn("flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-semibold", colorClass)}>
+                        {initials}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-foreground">{user.name}</span>
+                        <span className="text-xs text-muted-foreground">{user.role}</span>
+                      </div>
+                    </div>
+                  );
+                })}
                 {filteredUsers.length === 0 && (
                   <p className="text-sm text-muted-foreground px-3 py-2">
                     Ничего не найдено
@@ -220,26 +238,6 @@ const TariffInfo = () => {
             </CardContent>
           </Card>
 
-          {/* Block 4 — Contract data */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Данные договора</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <dl className="space-y-2">
-                {contractFields.map((field) => (
-                  <div key={field.label} className="flex items-baseline gap-2">
-                    <dt className="text-sm text-muted-foreground min-w-[220px]">
-                      {field.label}
-                    </dt>
-                    <dd className="text-sm text-foreground font-medium">
-                      {field.value || "—"}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </CardContent>
-          </Card>
         </div>
       </main>
     </div>
