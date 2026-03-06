@@ -1,5 +1,13 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
+export interface CompanyUser {
+  name: string;
+  role: string;
+  active: boolean;
+  lastLogin: string;
+  aiRuns: number;
+}
+
 export interface Company {
   id: string;
   name: string;
@@ -16,7 +24,7 @@ export interface Company {
   maxSubsidiaries: number;
   availableModules: string[];
   unavailableModules: string[];
-  users: { name: string; role: string }[];
+  users: CompanyUser[];
 }
 
 const companies: Company[] = [
@@ -37,21 +45,21 @@ const companies: Company[] = [
     availableModules: ["Риски", "События", "Меры", "Аналитика", "AI мониторинг"],
     unavailableModules: ["Лимитная кампания", "База знаний"],
     users: [
-      { name: "Анна К.", role: "Риск-менеджер" },
-      { name: "Саша В.", role: "Риск-координатор" },
-      { name: "Иван П.", role: "Аналитик" },
-      { name: "Мария Д.", role: "Риск-менеджер" },
-      { name: "Олег С.", role: "Аудитор" },
-      { name: "Елена Т.", role: "Риск-координатор" },
-      { name: "Дмитрий Л.", role: "Аналитик" },
-      { name: "Наталья Р.", role: "Риск-менеджер" },
-      { name: "Алексей М.", role: "Координатор" },
-      { name: "Светлана Б.", role: "Аналитик" },
-      { name: "Павел Г.", role: "Риск-менеджер" },
-      { name: "Ирина Н.", role: "Аудитор" },
-      { name: "Виктор Ф.", role: "Координатор" },
-      { name: "Юлия Х.", role: "Аналитик" },
-      { name: "Андрей Ж.", role: "Риск-менеджер" },
+      { name: "Анна К.", role: "Риск-менеджер", active: true, lastLogin: "05.03.2026", aiRuns: 3 },
+      { name: "Саша В.", role: "Риск-координатор", active: true, lastLogin: "04.03.2026", aiRuns: 1 },
+      { name: "Иван П.", role: "Аналитик", active: true, lastLogin: "05.03.2026", aiRuns: 5 },
+      { name: "Мария Д.", role: "Риск-менеджер", active: true, lastLogin: "03.03.2026", aiRuns: 0 },
+      { name: "Олег С.", role: "Аудитор", active: true, lastLogin: "01.03.2026", aiRuns: 2 },
+      { name: "Елена Т.", role: "Риск-координатор", active: true, lastLogin: "05.03.2026", aiRuns: 0 },
+      { name: "Дмитрий Л.", role: "Аналитик", active: true, lastLogin: "02.03.2026", aiRuns: 1 },
+      { name: "Наталья Р.", role: "Риск-менеджер", active: true, lastLogin: "28.02.2026", aiRuns: 0 },
+      { name: "Алексей М.", role: "Координатор", active: true, lastLogin: "04.03.2026", aiRuns: 1 },
+      { name: "Светлана Б.", role: "Аналитик", active: false, lastLogin: "15.01.2026", aiRuns: 0 },
+      { name: "Павел Г.", role: "Риск-менеджер", active: true, lastLogin: "05.03.2026", aiRuns: 0 },
+      { name: "Ирина Н.", role: "Аудитор", active: true, lastLogin: "03.03.2026", aiRuns: 0 },
+      { name: "Виктор Ф.", role: "Координатор", active: true, lastLogin: "01.03.2026", aiRuns: 0 },
+      { name: "Юлия Х.", role: "Аналитик", active: true, lastLogin: "04.03.2026", aiRuns: 0 },
+      { name: "Андрей Ж.", role: "Риск-менеджер", active: true, lastLogin: "05.03.2026", aiRuns: 0 },
     ],
   },
   {
@@ -71,11 +79,11 @@ const companies: Company[] = [
     availableModules: ["Риски", "События", "Меры"],
     unavailableModules: ["Аналитика", "AI мониторинг", "Лимитная кампания", "База знаний"],
     users: [
-      { name: "Григорий А.", role: "Риск-менеджер" },
-      { name: "Татьяна О.", role: "Координатор" },
-      { name: "Роман Е.", role: "Аналитик" },
-      { name: "Ольга В.", role: "Риск-менеджер" },
-      { name: "Сергей К.", role: "Аудитор" },
+      { name: "Григорий А.", role: "Риск-менеджер", active: true, lastLogin: "04.03.2026", aiRuns: 12 },
+      { name: "Татьяна О.", role: "Координатор", active: true, lastLogin: "03.03.2026", aiRuns: 8 },
+      { name: "Роман Е.", role: "Аналитик", active: true, lastLogin: "05.03.2026", aiRuns: 15 },
+      { name: "Ольга В.", role: "Риск-менеджер", active: true, lastLogin: "01.03.2026", aiRuns: 5 },
+      { name: "Сергей К.", role: "Аудитор", active: true, lastLogin: "28.02.2026", aiRuns: 2 },
     ],
   },
   {
@@ -95,9 +103,9 @@ const companies: Company[] = [
     availableModules: ["Риски", "События", "Меры", "Аналитика", "AI мониторинг"],
     unavailableModules: [],
     users: [
-      { name: "Кирилл М.", role: "Директор" },
-      { name: "Вера Н.", role: "Риск-менеджер" },
-      { name: "Максим П.", role: "Координатор" },
+      { name: "Кирилл М.", role: "Директор", active: true, lastLogin: "20.12.2025", aiRuns: 30 },
+      { name: "Вера Н.", role: "Риск-менеджер", active: true, lastLogin: "18.12.2025", aiRuns: 45 },
+      { name: "Максим П.", role: "Координатор", active: true, lastLogin: "19.12.2025", aiRuns: 25 },
     ],
   },
 ];
@@ -106,15 +114,31 @@ interface CompanyContextType {
   selectedCompany: Company;
   setSelectedCompany: (company: Company) => void;
   companies: Company[];
+  updateCompanyUsers: (companyId: string, users: CompanyUser[]) => void;
 }
 
 const CompanyContext = createContext<CompanyContextType | undefined>(undefined);
 
 export const CompanyProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedCompany, setSelectedCompany] = useState<Company>(companies[0]);
+  const [allCompanies, setAllCompanies] = useState<Company[]>(companies);
+  const [selectedCompany, setSelectedCompanyState] = useState<Company>(allCompanies[0]);
+
+  const setSelectedCompany = (company: Company) => {
+    setSelectedCompanyState(company);
+  };
+
+  const updateCompanyUsers = (companyId: string, users: CompanyUser[]) => {
+    const activeCount = users.filter(u => u.active).length;
+    setAllCompanies(prev => prev.map(c =>
+      c.id === companyId ? { ...c, users, activeUsers: activeCount } : c
+    ));
+    if (selectedCompany.id === companyId) {
+      setSelectedCompanyState(prev => ({ ...prev, users, activeUsers: activeCount }));
+    }
+  };
 
   return (
-    <CompanyContext.Provider value={{ selectedCompany, setSelectedCompany, companies }}>
+    <CompanyContext.Provider value={{ selectedCompany, setSelectedCompany, companies: allCompanies, updateCompanyUsers }}>
       {children}
     </CompanyContext.Provider>
   );
