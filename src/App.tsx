@@ -8,6 +8,11 @@ import Index from "./pages/Index";
 import TariffInfo from "./pages/TariffInfo";
 import NotFound from "./pages/NotFound";
 
+// LOVABLE_KEEP_START
+// Не изменять этот блок: специфическая настройка basename для GitHub Pages
+const isGitHubPages = window.location.hostname.includes("github.io");
+const basename = isGitHubPages ? "/tarif-planes-copy" : "";
+// LOVABLE_KEEP_END
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -16,7 +21,9 @@ const App = () => (
       <CompanyProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        {/* LOVABLE_KEEP_START */}
+        <BrowserRouter basename={basename}>
+        {/* LOVABLE_KEEP_END */}
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/tariff" element={<TariffInfo />} />
