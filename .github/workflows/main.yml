@@ -1,21 +1,19 @@
-name: Deploy to GitHub Pages
+name: Deploy tariff preview to GitHub Pages
 
 on:
-  # Триггер: запускать при пуше в main (или master)
   push:
-    branches: [ "main" ]
-  # Также можно запускать вручную
+    branches:
+      - agent/tariff-preview
   workflow_dispatch:
 
-# Указываем права на запись в GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: github-pages
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -23,30 +21,36 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout preview branch
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Укажи версию, с которой работает твой проект
-          cache: 'npm'
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build
+      - name: Build preview
         run: npm run build
 
-      # Шаг, который загружает сборку на GitHub Pages
-      - name: Setup Pages
+      # GitHub Pages does not natively fall back to index.html for BrowserRouter.
+      # Publishing the same app shell as 404.html keeps direct links and refreshes
+      # such as /tarif-planes-copy/tariff working.
+      - name: Add SPA fallback
+        run: cp dist/index.html dist/404.html
+
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Укажи путь к папке, которую нужно задеплоить
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment
