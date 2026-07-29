@@ -53,9 +53,9 @@ const AppSidebar = () => {
       >
         {/* Logo */}
         <div className="flex items-center gap-2.5 px-5 py-5">
-          <div className="w-8 h-8 rounded-lg gradient-green flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-lg gradient-green text-primary-foreground flex items-center justify-center flex-shrink-0">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M9 2L2 9L9 16L16 9L9 2Z" fill="white" />
+              <path d="M9 2L2 9L9 16L16 9L9 2Z" fill="currentColor" />
             </svg>
           </div>
           {!collapsed && (

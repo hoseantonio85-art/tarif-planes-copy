@@ -1,0 +1,50 @@
+.screen {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 32px;
+  background: var(--backgroundBasicDefault);
+}
+
+.card {
+  box-sizing: border-box;
+  width: min(620px, 100%);
+  padding: 48px;
+  border: 1px solid var(--borderDefault);
+  border-radius: 20px;
+  background: var(--surfaceBasicDefault);
+}
+
+.loadingCard {
+  box-sizing: border-box;
+  width: min(420px, 100%);
+  padding: 40px;
+  border: 1px solid var(--borderDefault);
+  border-radius: 20px;
+  background: var(--surfaceBasicDefault);
+}
+
+.iconWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--surfaceAccentStatusInfo);
+  color: var(--iconTechInfo);
+}
+
+.center {
+  text-align: center;
+}
+
+.secondary {
+  color: var(--textBaseSecondary);
+}
+
+@media (max-width: 560px) {
+  .screen {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 28px 20px;
+  }
+}

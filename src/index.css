@@ -1,95 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 97%;
-    --foreground: 220 20% 14%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 14%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 14%;
-
-    --primary: 155 72% 45%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 20% 14%;
-
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 10% 46%;
-
-    --accent: 270 60% 94%;
-    --accent-foreground: 270 40% 40%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 155 72% 45%;
-
-    --radius: 0.75rem;
-
-    --sidebar-bg: 0 0% 100%;
-    --sidebar-foreground: 220 10% 40%;
-    --sidebar-active: 155 72% 45%;
-    --sidebar-hover: 220 14% 96%;
-    --sidebar-border: 220 13% 93%;
-
-    --success: 155 72% 45%;
-    --warning: 36 100% 55%;
-    --danger: 0 75% 55%;
-    --info: 175 60% 50%;
-
-    --gradient-green: linear-gradient(135deg, hsl(155, 72%, 45%), hsl(75, 70%, 55%));
-    --gradient-accent: linear-gradient(135deg, hsl(270, 60%, 94%), hsl(200, 60%, 94%));
-  }
-
-  .dark {
-    --background: 220 20% 10%;
-    --foreground: 0 0% 95%;
-    --card: 220 20% 14%;
-    --card-foreground: 0 0% 95%;
-    --popover: 220 20% 14%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 155 72% 45%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 18%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 220 14% 18%;
-    --muted-foreground: 220 10% 60%;
-    --accent: 270 40% 20%;
-    --accent-foreground: 270 60% 80%;
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 95%;
-    --border: 220 14% 20%;
-    --input: 220 14% 20%;
-    --ring: 155 72% 45%;
-  }
+@font-face {
+  font-family: "SBSansText";
+  src: url("./assets/fonts/SBSansText-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', sans-serif;
-  }
+@font-face {
+  font-family: "SBSansText";
+  src: url("./assets/fonts/SBSansText-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
-@layer utilities {
-  .gradient-green {
-    background: var(--gradient-green);
-  }
-  .gradient-accent {
-    background: var(--gradient-accent);
-  }
+@font-face {
+  font-family: "SBSansText";
+  src: url("./assets/fonts/SBSansText-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--backgroundBasicDefault);
+  color: var(--textBaseDefault);
+  font-family: "SBSansText", sans-serif;
 }

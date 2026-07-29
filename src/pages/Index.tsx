@@ -7,7 +7,7 @@ import EventsSection from "@/components/EventsSection";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="legacyApp flex min-h-screen bg-background">
       <AppSidebar />
       <main className="flex-1 overflow-y-auto">
         <div className="max-w-[960px] mx-auto px-8 py-8 space-y-6">

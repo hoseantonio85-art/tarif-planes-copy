@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -14,58 +15,58 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ["SBSansText", "sans-serif"],
       },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "var(--borderDefault)",
+        input: "var(--borderDefault)",
+        ring: "var(--borderFocus)",
+        background: "var(--backgroundBasicDefault)",
+        foreground: "var(--textBaseDefault)",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "var(--backgroundPrimaryDefault)",
+          foreground: "var(--textBaseInverse)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "var(--backgroundSecondaryDefault)",
+          foreground: "var(--textBaseDefault)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "var(--backgroundTechDanger)",
+          foreground: "var(--textBaseInverse)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "var(--backgroundSecondaryDefault)",
+          foreground: "var(--textBaseSecondary)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "var(--backgroundLightQuest)",
+          foreground: "var(--textBaseDefault)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "var(--backgroundBasicDefault)",
+          foreground: "var(--textBaseDefault)",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--backgroundBasicDefault)",
+          foreground: "var(--textBaseDefault)",
         },
-        success: "hsl(var(--success))",
-        warning: "hsl(var(--warning))",
-        danger: "hsl(var(--danger))",
-        info: "hsl(var(--info))",
+        success: "var(--backgroundTechSuccess)",
+        warning: "var(--backgroundTechWarning)",
+        danger: "var(--backgroundTechDanger)",
+        info: "var(--backgroundAccentInfo)",
         sidebar: {
-          DEFAULT: "hsl(var(--sidebar-bg))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          active: "hsl(var(--sidebar-active))",
-          hover: "hsl(var(--sidebar-hover))",
-          border: "hsl(var(--sidebar-border))",
+          DEFAULT: "var(--backgroundBasicDefault)",
+          foreground: "var(--textBaseSecondary)",
+          active: "var(--backgroundPrimaryDefault)",
+          hover: "var(--backgroundBasicHover)",
+          border: "var(--borderDefault)",
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "var(--controlBorderRadius)",
+        md: "calc(var(--controlBorderRadius) - 2px)",
+        sm: "calc(var(--controlBorderRadius) - 4px)",
       },
       keyframes: {
         "accordion-down": {
@@ -83,5 +84,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

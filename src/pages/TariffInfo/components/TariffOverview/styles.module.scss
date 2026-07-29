@@ -1,0 +1,58 @@
+.summaryRow {
+  width: 100%;
+}
+
+.summaryRow > .summaryColumn {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.summaryCard,
+.section {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--borderDefault);
+  border-radius: 16px;
+  background: var(--surfaceBasicDefault);
+}
+
+.summaryCard {
+  min-height: 188px;
+  padding: 24px;
+}
+
+.section {
+  padding: 24px;
+}
+
+.label {
+  color: var(--textBaseSecondary);
+}
+
+.summaryCard .statusValue {
+  color: var(--textTechSuccess);
+}
+
+.modulePopover {
+  width: 304px;
+  padding-top: 12px;
+}
+
+.moduleAction {
+  width: 100%;
+}
+
+.unavailableText {
+  color: var(--textTechWarning);
+}
+
+@media (max-width: 760px) {
+  .summaryRow {
+    flex-wrap: wrap;
+  }
+
+  .summaryRow > .summaryColumn {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,72 @@
+.pageShell {
+  width: 100%;
+  min-height: 100vh;
+  align-items: stretch;
+  background: var(--backgroundBasicDefault);
+}
+
+.sidebarShell {
+  flex: 0 0 auto;
+}
+
+.main {
+  width: 100%;
+  min-width: 0;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.content {
+  box-sizing: border-box;
+  width: min(960px, 100%);
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.header {
+  width: 100%;
+}
+
+.headerCopy {
+  min-width: 0;
+}
+
+.eyebrow {
+  color: var(--textBaseSecondary);
+}
+
+.header .backButton {
+  flex: 0 0 auto;
+  border-radius: 50%;
+}
+
+.usersSection {
+  padding: 24px;
+  border: 1px solid var(--borderDefault);
+  border-radius: 16px;
+  background: var(--surfaceBasicDefault);
+}
+
+.notificationHost > div > div {
+  top: 8px;
+}
+
+@media (max-width: 760px) {
+  .sidebarShell {
+    display: none;
+  }
+
+  .main {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .content {
+    padding: 24px 16px;
+  }
+
+  .usersSection {
+    padding: 18px;
+  }
+}

@@ -2,9 +2,12 @@
   "compilerOptions": {
     "allowJs": true,
     "noImplicitAny": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "paths": {
+      "@sber-orm/ui-kit": [
+        "./vendor/ui-kit-0.283.0/dist/index.d.ts"
+      ],
       "@/*": [
         "./src/*"
       ]

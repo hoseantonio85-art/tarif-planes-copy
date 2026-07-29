@@ -13,10 +13,21 @@ export default defineConfig(({ mode }) => ({
     },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
-  base: 'tarif-planes-copy',
+  base: mode === "development" ? "/" : "/tarif-planes-copy/",
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+    alias: [
+      {
+        find: "@sber-orm/ui-kit/index.css",
+        replacement: path.resolve(__dirname, "./vendor/ui-kit-0.283.0/dist/index.css"),
+      },
+      {
+        find: "@sber-orm/ui-kit",
+        replacement: path.resolve(__dirname, "./vendor/ui-kit-0.283.0/dist/index.js"),
+      },
+      {
+        find: "@",
+        replacement: path.resolve(__dirname, "./src"),
+      },
+    ],
   },
 }));

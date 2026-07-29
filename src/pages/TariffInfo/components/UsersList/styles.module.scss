@@ -1,0 +1,107 @@
+.list {
+  overflow: hidden;
+  border: 1px solid var(--borderDefault);
+  border-radius: 14px;
+  background: var(--surfaceBasicDefault);
+}
+
+.userRow {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 88px;
+  padding: 16px;
+  border-bottom: 1px solid var(--borderDefault);
+  transition: background-color 160ms ease;
+}
+
+.userRow:hover,
+.userRow:focus-within {
+  background: var(--backgroundBasicHover);
+}
+
+.userRow:last-child {
+  border-bottom: 0;
+}
+
+.userRowMuted {
+  background: var(--surfaceGhostDefault);
+  opacity: 0.68;
+}
+
+.identity {
+  min-width: 220px;
+  flex: 0 1 280px;
+}
+
+.identityMeta {
+  position: relative;
+  width: 100%;
+  height: 24px;
+}
+
+.role,
+.emailActions {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 160ms ease;
+}
+
+.role,
+.email {
+  color: var(--textBaseSecondary);
+}
+
+.emailActions {
+  max-width: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.email {
+  max-width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userRow:hover .role,
+.userRow:focus-within .role {
+  opacity: 0;
+}
+
+.userRow:hover .emailActions,
+.userRow:focus-within .emailActions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.details {
+  min-width: 0;
+  flex: 1 1 320px;
+}
+
+.emptyState {
+  padding: 40px 24px;
+  border: 1px dashed var(--borderDefault);
+  border-radius: 14px;
+  background: var(--surfaceGhostDefault);
+}
+
+.secondaryText {
+  color: var(--textBaseSecondary);
+}
+
+@media (max-width: 760px) {
+  .userRow {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .userRow > .identity,
+  .userRow > .details {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+}
