@@ -33,38 +33,48 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
   const selectedModule = popover
     ? contract.modules.find((module) => module.id === popover.moduleId) ?? null
     : null;
+  const currentCompanyName =
+    contract.companies.find((company) => company.current)?.name ??
+    contract.companies[0]?.name;
 
   return (
     <Row direction="column" gutter={24} align="stretch">
-      <Row gutter={16} align="stretch" wrap className={classes.summaryRow}>
-        <Col className={classes.summaryColumn}>
-          <Row direction="column" gutter={20} align="stretch" className={classes.summaryCard}>
-            <Row direction="column" gutter={6} align="top">
-              <Text size="sm" className={classes.label}>{t("summary.tariff")}</Text>
-              <Title size="H700">{contract.tariffName}</Title>
+      <Row direction="column" gutter={24} align="stretch" className={classes.summaryCard}>
+        <Row direction="column" gutter={4} align="top">
+          <Title size="H500">{currentCompanyName}</Title>
+          <Text size="md" className={classes.description}>{contract.description}</Text>
+        </Row>
+        <Row gutter={16} align="stretch" wrap className={classes.summaryGrid}>
+          <Col className={classes.summaryColumn}>
+            <Row direction="column" gutter={12} align="stretch" className={classes.summaryPanel}>
+              <Row direction="column" gutter={4} align="stretch">
+                <Text size="sm" className={classes.label}>{t("summary.tariff")}</Text>
+                <Title size="H500">{contract.tariffName}</Title>
+              </Row>
+              <Text size="sm" className={classes.label}>
+                {contract.startsAt}–{contract.endsAt}
+              </Text>
             </Row>
-            <Row direction="column" gutter={6} align="top">
-              <Text size="sm" className={classes.label}>{t("summary.period")}</Text>
-              <Text bold>{contract.startsAt}–{contract.endsAt}</Text>
+          </Col>
+          <Col className={classes.summaryColumn}>
+            <Row direction="column" gutter={12} align="stretch" className={classes.summaryPanel}>
+              <Row direction="column" gutter={4} align="stretch">
+                <Text size="sm" className={classes.label}>{t("summary.contract")}</Text>
+                <Title size="H500" className={classes.statusValue}>{t("summary.active")}</Title>
+              </Row>
+              <Text size="sm" className={classes.label}>
+                {t("summary.contractShortNumber", { number: contract.contractNumber })}
+              </Text>
             </Row>
-          </Row>
-        </Col>
-        <Col className={classes.summaryColumn}>
-          <Row direction="column" gutter={20} align="stretch" className={classes.summaryCard}>
-            <Row direction="column" gutter={6} align="top">
-              <Text size="sm" className={classes.label}>{t("summary.contractStatus")}</Text>
-              <Title size="H700" className={classes.statusValue}>{t("summary.active")}</Title>
-            </Row>
-            <Row direction="column" gutter={6} align="top">
-              <Text size="sm" className={classes.label}>{t("summary.contractNumber")}</Text>
-              <Text bold>{t("summary.contractValue", { number: contract.contractNumber })}</Text>
-            </Row>
-          </Row>
-        </Col>
+          </Col>
+        </Row>
       </Row>
 
       <Row direction="column" gutter={16} align="stretch" className={classes.section}>
-        <Title size="H500">{t("companies.title")}</Title>
+        <Row gutter={8} noFlex align="middle">
+          <Title size="H500">{t("companies.title")}</Title>
+          <Text bold className={classes.sectionCount}>{contract.companies.length}</Text>
+        </Row>
         <Row gutter={8} wrap>
           {contract.companies.map((company) => (
             <Chips
@@ -83,7 +93,10 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
       </Row>
 
       <Row direction="column" gutter={16} align="stretch" className={classes.section}>
-        <Title size="H500">{t("modules.title")}</Title>
+        <Row gutter={8} noFlex align="middle">
+          <Title size="H500">{t("modules.title")}</Title>
+          <Text bold className={classes.sectionCount}>{contract.modules.length}</Text>
+        </Row>
         <Row gutter={8} wrap>
           {contract.modules.map((module) => (
             <Chips

@@ -1,39 +1,12 @@
-.pageShell {
-  width: 100%;
-  min-height: 100vh;
-  align-items: stretch;
-  background: var(--backgroundBasicDefault);
-}
-
-.sidebarShell {
-  flex: 0 0 auto;
-}
-
-.main {
-  width: 100%;
-  min-width: 0;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
 .content {
   box-sizing: border-box;
-  width: min(960px, 100%);
+  width: min(960px, calc(100% - 64px));
   margin: 0 auto;
-  padding: 32px;
+  padding: 32px 0;
 }
 
 .header {
   width: 100%;
-}
-
-.headerCopy {
-  min-width: 0;
-}
-
-.eyebrow {
-  color: var(--textBaseSecondary);
 }
 
 .header .backButton {
@@ -42,10 +15,24 @@
 }
 
 .usersSection {
-  padding: 24px;
+  padding: 32px;
   border: 1px solid var(--borderDefault);
-  border-radius: 16px;
+  border-radius: 24px;
   background: var(--surfaceBasicDefault);
+}
+
+.usersSection .sectionCount {
+  color: var(--textBaseSecondary);
+}
+
+.alertFrame {
+  width: 100%;
+  min-width: 0;
+}
+
+.alertFrame > div {
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .notificationHost > div > div {
@@ -53,20 +40,12 @@
 }
 
 @media (max-width: 760px) {
-  .sidebarShell {
-    display: none;
-  }
-
-  .main {
-    height: auto;
-    min-height: 100vh;
-  }
-
   .content {
+    width: 100%;
     padding: 24px 16px;
   }
 
   .usersSection {
-    padding: 18px;
+    padding: 24px 16px;
   }
 }

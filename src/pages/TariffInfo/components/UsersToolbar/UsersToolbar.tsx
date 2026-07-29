@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, type Dispatch, type SetStateAction } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import {
   Button,
   FieldSearch,
@@ -24,7 +24,9 @@ interface UsersToolbarProps {
   openFilters: () => void;
   closeFilters: () => void;
   draftFilters: AppliedUserFilters;
-  setDraftFilters: Dispatch<SetStateAction<AppliedUserFilters>>;
+  setDraftStatus: (status: AppliedUserFilters["status"]) => void;
+  setDraftRole: (roleId: AppliedUserFilters["roleId"]) => void;
+  setDraftStale: (staleOnly: boolean) => void;
   resetFilters: () => void;
   applyFilters: () => void;
   roleIds: readonly RoleId[];
@@ -41,7 +43,9 @@ export const UsersToolbar = ({
   openFilters,
   closeFilters,
   draftFilters,
-  setDraftFilters,
+  setDraftStatus,
+  setDraftRole,
+  setDraftStale,
   resetFilters,
   applyFilters,
   roleIds,
@@ -51,8 +55,8 @@ export const UsersToolbar = ({
   const quickItems = useMemo(
     () => [
       { id: "all", title: t("toolbar.all") },
-      { id: "in_tariff", title: t("toolbar.inTariff") },
-      { id: "out_of_tariff", title: t("toolbar.outOfTariff") },
+      { id: "in_tariff", title: t("toolbar.tariff") },
+      { id: "out_of_tariff", title: t("toolbar.guest") },
     ],
     [t],
   );
@@ -78,25 +82,17 @@ export const UsersToolbar = ({
   );
   const handleSearchChange = useCallback((value: string) => setQuery(value), [setQuery]);
   const handleStatusChange = useCallback(
-    (id: string) =>
-      setDraftFilters((current) => ({
-        ...current,
-        status: id as AppliedUserFilters["status"],
-      })),
-    [setDraftFilters],
+    (id: string) => setDraftStatus(id as AppliedUserFilters["status"]),
+    [setDraftStatus],
   );
   const handleRoleChange = useCallback(
-    (id: string) =>
-      setDraftFilters((current) => ({
-        ...current,
-        roleId: id as AppliedUserFilters["roleId"],
-      })),
-    [setDraftFilters],
+    (id: string) => setDraftRole(id as AppliedUserFilters["roleId"]),
+    [setDraftRole],
   );
   const handleStaleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) =>
-      setDraftFilters((current) => ({ ...current, staleOnly: event.target.checked })),
-    [setDraftFilters],
+      setDraftStale(event.target.checked),
+    [setDraftStale],
   );
 
   return (

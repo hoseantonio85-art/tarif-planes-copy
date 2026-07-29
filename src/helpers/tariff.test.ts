@@ -5,7 +5,9 @@ import {
   filterUsers,
   getActivationOutcome,
   getActivePaidUsersCount,
+  getUserAvatarTone,
   getPrimaryRoleId,
+  getUserInitials,
   isStaleUser,
   updateUserStatus,
 } from "@/helpers/tariff";
@@ -62,6 +64,15 @@ describe("tariff selectors", () => {
 
   it("prioritizes a paid role over display order", () => {
     expect(getPrimaryRoleId(users[0])).toBe("ORMCLOUD_USER");
+  });
+
+  it("builds initials from the first two name parts", () => {
+    expect(getUserInitials("  Анна   Кузнецова Дмитриевна ")).toBe("АК");
+  });
+
+  it("keeps avatar colors stable while distributing users across the palette", () => {
+    expect(getUserAvatarTone("anna")).toBe(getUserAvatarTone("anna"));
+    expect(new Set(users.map((user) => getUserAvatarTone(user.id))).size).toBeGreaterThan(1);
   });
 
   it("marks users stale after sixty days", () => {

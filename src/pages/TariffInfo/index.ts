@@ -1,2 +1,1 @@
-export { default } from "./TariffInfo";
-
+export { TariffInfo } from "./TariffInfo";

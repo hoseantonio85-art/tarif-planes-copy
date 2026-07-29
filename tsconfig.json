@@ -1,27 +1,3 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "noImplicitAny": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "paths": {
-      "@sber-orm/ui-kit": [
-        "./vendor/ui-kit-0.283.0/dist/index.d.ts"
-      ],
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "skipLibCheck": true,
-    "strictNullChecks": false
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+  "extends": "./tsconfig.app.json"
 }

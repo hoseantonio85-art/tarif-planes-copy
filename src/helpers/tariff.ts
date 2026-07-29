@@ -14,6 +14,17 @@ const ROLE_PRIORITY: readonly RoleId[] = [
   "ORMCLOUD_AUDITOR",
 ];
 
+export const USER_AVATAR_TONES = [
+  "info",
+  "success",
+  "warning",
+  "discovery",
+  "danger",
+  "brand",
+] as const;
+
+export type UserAvatarTone = (typeof USER_AVATAR_TONES)[number];
+
 export const consumesPaidSlot = (user: TariffUser): boolean =>
   user.status === "active" && user.inTariff;
 
@@ -40,6 +51,22 @@ export const updateUserStatus = (
 
 export const getPrimaryRoleId = (user: TariffUser): RoleId =>
   ROLE_PRIORITY.find((roleId) => user.roleIds.includes(roleId)) ?? user.roleIds[0];
+
+export const getUserInitials = (fullName: string): string =>
+  fullName
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toLocaleUpperCase("ru") ?? "")
+    .join("");
+
+export const getUserAvatarTone = (seed: string): UserAvatarTone => {
+  const hash = Array.from(seed).reduce(
+    (value, character) => (value * 31 + character.codePointAt(0)!) >>> 0,
+    0,
+  );
+  return USER_AVATAR_TONES[hash % USER_AVATAR_TONES.length];
+};
 
 const parseRuDate = (value: string): Date => {
   const [day, month, year] = value.split(".").map(Number);
