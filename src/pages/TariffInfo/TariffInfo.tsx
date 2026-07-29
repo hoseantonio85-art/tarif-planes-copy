@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, type ComponentProps } from "react";
 import {
   Alert,
   Button,
@@ -22,6 +22,12 @@ import { UserAccessModal } from "@/pages/TariffInfo/components/UserAccessModal/U
 import { UsersList } from "@/pages/TariffInfo/components/UsersList/UsersList";
 import { UsersToolbar } from "@/pages/TariffInfo/components/UsersToolbar/UsersToolbar";
 import classes from "./styles.module.scss";
+
+const FullWidthAlert = (props: ComponentProps<typeof Alert>) => (
+  <div className={classes.alertFrame}>
+    <Alert {...props} />
+  </div>
+);
 
 const TariffInfo = () => {
   const { t } = useTranslation("tariff");
@@ -81,18 +87,15 @@ const TariffInfo = () => {
               className={classes.backButton}
               onClick={handleBack}
             />
-            <Row direction="column" gutter={4} align="top" className={classes.headerCopy}>
-              <Text size="sm" className={classes.eyebrow}>{t("page.title")}</Text>
-              <Title size="H700">{currentCompanyName}</Title>
-            </Row>
+            <Title size="H700">{t("page.title")}</Title>
           </Row>
 
           {model.isRefreshing && (
-            <Alert status="info" message={t("system.refreshing")} />
+            <FullWidthAlert status="info" message={t("system.refreshing")} />
           )}
 
           {feedback && feedback !== "activated" && (
-            <Alert
+            <FullWidthAlert
               status="success"
               message={t(`feedback.${feedback}`)}
               onClose={clearFeedback}
@@ -102,12 +105,15 @@ const TariffInfo = () => {
           <TariffOverview contract={model.contract} onFeedback={showFeedback} />
 
           <Row direction="column" gutter={24} align="stretch" className={classes.usersSection}>
-            <Title size="H500">
-              {t("users.title", {
+            <Row gutter={8} align="middle" noFlex>
+              <Title size="H500">{t("users.title")}</Title>
+              <Text bold className={classes.sectionCount}>
+                {t("users.count", {
                 active: model.activePaidUsers,
                 max: model.contract.maxPaidUsers,
               })}
-            </Title>
+              </Text>
+            </Row>
             <Row direction="column" gutter={32} align="stretch">
               <Row direction="column" gutter={12} align="stretch">
                 <UsersToolbar
@@ -127,7 +133,7 @@ const TariffInfo = () => {
                   roleIds={model.roleIds}
                 />
                 {model.limitWarning && (
-                  <Alert
+                  <FullWidthAlert
                     status="danger"
                     message={t("users.limitWarning")}
                     onClose={model.clearLimitWarning}
@@ -146,7 +152,6 @@ const TariffInfo = () => {
 
       <UserAccessModal
         kind={model.dialog?.kind ?? null}
-        user={model.dialogUser}
         onClose={model.closeDialog}
         onConfirmDeactivation={model.confirmDeactivation}
       />

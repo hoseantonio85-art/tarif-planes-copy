@@ -43,6 +43,7 @@ export interface TariffUser {
 }
 
 export interface TariffContract {
+  description: string;
   tariffName: string;
   startsAt: string;
   endsAt: string;

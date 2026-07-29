@@ -11,7 +11,12 @@ import {
 } from "@sber-orm/ui-kit";
 import { useTranslation } from "react-i18next";
 import type { PermissionMode, RoleId, TariffUser } from "@/@types/tariff";
-import { getPrimaryRoleId, isStaleUser } from "@/helpers/tariff";
+import {
+  getPrimaryRoleId,
+  getUserAvatarTone,
+  getUserInitials,
+  isStaleUser,
+} from "@/helpers/tariff";
 import { SCENARIO_NOW } from "@/data/tariffFixtures";
 import classes from "./styles.module.scss";
 
@@ -25,6 +30,8 @@ const UserRow = ({ user, permissionMode, onStatusChange }: UserRowProps) => {
   const { t } = useTranslation("tariff");
   const copyToClipboard = useCopyToClipboard();
   const primaryRoleId: RoleId = getPrimaryRoleId(user);
+  const initials = getUserInitials(user.fullName);
+  const avatarTone = getUserAvatarTone(user.id);
   const stale = isStaleUser(user, SCENARIO_NOW);
 
   const handleCopy = useCallback(async () => {
@@ -40,45 +47,71 @@ const UserRow = ({ user, permissionMode, onStatusChange }: UserRowProps) => {
     <Row
       gutter={16}
       justify="between"
-      align="middle"
-      wrap
-      className={`${classes.userRow} ${user.status === "deactivated" ? classes.userRowMuted : ""}`}
+      align="top"
+      className={classes.userRow}
     >
-      <Row direction="column" gutter={4} align="top" className={classes.identity}>
-        <Text medium>{user.fullName}</Text>
-        <div className={classes.identityMeta}>
-          <Text size="sm" className={classes.role}>{t(`roles.${primaryRoleId}`)}</Text>
-          <Row gutter={4} noFlex align="middle" className={classes.emailActions}>
-            <Text size="sm" className={classes.email}>{user.email}</Text>
-            <Button
-              size="XXS"
-              variant="function"
-              icon="copy"
-              iconOnly
-              aria-label={t("aria.copyEmail", { email: user.email })}
-              onClick={handleCopy}
-            />
+      <Row gutter={16} align="middle" wrap className={classes.userContent}>
+        <Row gutter={12} align="middle" className={classes.identity}>
+          <Row
+            justify="center"
+            align="middle"
+            className={classes.avatar}
+            data-tone={avatarTone}
+            aria-hidden
+          >
+            <Text size="sm" medium className={classes.avatarText}>{initials}</Text>
           </Row>
-        </div>
-      </Row>
-
-      <Row gutter={12} wrap className={classes.details}>
-        {stale && <Badge variant="yellow">{t("users.stale")}</Badge>}
-        <Row gutter={6} noFlex>
-          <Icon name="clock" width={16} height={16} />
-          <Text size="sm">{user.lastLogin}</Text>
+          <Row direction="column" gutter={2} align="top" className={classes.identityCopy}>
+            <Text medium className={classes.userName}>{user.fullName}</Text>
+            <Row gutter={8} align="middle" className={classes.roleLine}>
+              <Text size="sm" className={classes.role}>{t(`roles.${primaryRoleId}`)}</Text>
+              {stale && (
+                <Row gutter={4} align="middle" className={classes.stale}>
+                  <Icon
+                    name="clock"
+                    width={12}
+                    height={12}
+                    className={classes.staleIcon}
+                  />
+                  <Text size="sm" className={classes.staleText}>{t("users.stale")}</Text>
+                </Row>
+              )}
+            </Row>
+          </Row>
         </Row>
-        <Badge variant={user.inTariff ? "green" : "gray"}>
-          {user.inTariff ? t("users.inTariff") : t("users.outOfTariff")}
-        </Badge>
+
+        <Row gutter={4} align="middle" className={classes.emailActions}>
+          <Text size="sm" className={classes.email}>{user.email}</Text>
+          <Button
+            size="XXS"
+            variant="function"
+            icon="copy"
+            iconOnly
+            aria-label={t("aria.copyEmail", { email: user.email })}
+            onClick={handleCopy}
+          />
+        </Row>
+
+        <Row gutter={16} justify="between" align="middle" className={classes.details}>
+          <Row noFlex justify="end" className={classes.badgeSlot}>
+            <Badge variant={user.inTariff ? "violet" : "gray"}>
+              {user.inTariff ? t("users.tariff") : t("users.guest")}
+            </Badge>
+          </Row>
+          <Text size="sm" className={stale ? classes.staleDate : classes.date}>
+            {user.lastLogin}
+          </Text>
+        </Row>
       </Row>
 
-      <Switch
-        checked={user.status === "active"}
-        disabled={permissionMode === "view"}
-        inputProps={{ "aria-label": t("access.switchLabel", { name: user.fullName }) }}
-        onChange={handleStatusChange}
-      />
+      <Row noFlex align="middle" className={classes.switchSlot}>
+        <Switch
+          checked={user.status === "active"}
+          disabled={permissionMode === "view"}
+          inputProps={{ "aria-label": t("access.switchLabel", { name: user.fullName }) }}
+          onChange={handleStatusChange}
+        />
+      </Row>
     </Row>
   );
 };
@@ -101,7 +134,7 @@ export const UsersList = ({ users, permissionMode, onStatusChange }: UsersListPr
   }
 
   return (
-    <Row direction="column" gutter={0} align="stretch" className={classes.list}>
+    <Row direction="column" gutter={8} align="stretch" className={classes.list}>
       {users.map((user) => (
         <UserRow
           key={user.id}

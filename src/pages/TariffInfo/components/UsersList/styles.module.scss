@@ -1,73 +1,144 @@
 .list {
-  overflow: hidden;
-  border: 1px solid var(--borderDefault);
-  border-radius: 14px;
-  background: var(--surfaceBasicDefault);
+  width: calc(100% + 16px);
+  margin: 0 -8px;
 }
 
 .userRow {
   box-sizing: border-box;
   width: 100%;
-  min-height: 88px;
-  padding: 16px;
-  border-bottom: 1px solid var(--borderDefault);
+  min-height: 56px;
+  padding: 8px;
+  border-radius: 16px;
   transition: background-color 160ms ease;
 }
 
 .userRow:hover,
 .userRow:focus-within {
-  background: var(--backgroundBasicHover);
+  background: var(--surfaceSecondaryDefault);
 }
 
-.userRow:last-child {
-  border-bottom: 0;
+.userContent {
+  min-width: 0;
 }
 
-.userRowMuted {
-  background: var(--surfaceGhostDefault);
-  opacity: 0.68;
+.userRow > .userContent {
+  flex: 1 1 auto;
 }
 
 .identity {
-  min-width: 220px;
-  flex: 0 1 280px;
+  min-width: 280px;
 }
 
-.identityMeta {
-  position: relative;
-  width: 100%;
-  height: 24px;
+.userContent > .identity {
+  flex: 0 0 386px;
 }
 
-.role,
-.emailActions {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: opacity 160ms ease;
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
 }
 
-.role,
-.email {
-  color: var(--textBaseSecondary);
+.identity > .avatar {
+  flex: 0 0 40px;
 }
 
-.emailActions {
+.avatar[data-tone="info"] {
+  background: var(--backgroundLightInfoLight);
+}
+
+.avatar[data-tone="info"] .avatarText {
+  color: var(--textAccentInfo);
+}
+
+.avatar[data-tone="success"] {
+  background: var(--backgroundLightSuccessLight);
+}
+
+.avatar[data-tone="success"] .avatarText {
+  color: var(--textTechSuccess);
+}
+
+.avatar[data-tone="warning"] {
+  background: var(--backgroundLightWarningLight);
+}
+
+.avatar[data-tone="warning"] .avatarText {
+  color: var(--textAccentWarning);
+}
+
+.avatar[data-tone="discovery"] {
+  background: var(--backgroundLightQuestLight);
+}
+
+.avatar[data-tone="discovery"] .avatarText {
+  color: var(--textAccentDiscovery);
+}
+
+.avatar[data-tone="danger"] {
+  background: var(--backgroundLightDangerLight);
+}
+
+.avatar[data-tone="danger"] .avatarText {
+  color: var(--textAccentDanger);
+}
+
+.avatar[data-tone="brand"] {
+  background: var(--backgroundLightBrandLight);
+}
+
+.avatar[data-tone="brand"] .avatarText {
+  color: var(--textBrandDefault);
+}
+
+.identityCopy,
+.userName {
+  min-width: 0;
+}
+
+.identity > .identityCopy {
+  flex: 1 1 auto;
+}
+
+.userName {
   max-width: 100%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.email {
-  max-width: 230px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.userRow:hover .role,
-.userRow:focus-within .role {
+.roleLine {
+  min-width: 0;
+}
+
+.identityCopy > .roleLine,
+.roleLine > .stale {
+  flex: 0 0 auto;
+}
+
+.identityCopy .role,
+.emailActions .email,
+.details .date {
+  color: var(--textBaseSecondary);
+}
+
+.emailActions {
+  min-width: 0;
+  justify-content: flex-end;
   opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.userContent > .emailActions {
+  flex: 1 1 190px;
+}
+
+.email {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .userRow:hover .emailActions,
@@ -76,9 +147,44 @@
   pointer-events: auto;
 }
 
+.stale .staleText,
+.details .staleDate {
+  color: var(--textAccentWarning);
+}
+
+.stale {
+  white-space: nowrap;
+}
+
+.stale .staleIcon {
+  color: var(--iconAccentWarning);
+}
+
 .details {
-  min-width: 0;
-  flex: 1 1 320px;
+  box-sizing: border-box;
+  min-width: 160px;
+}
+
+.userContent > .details {
+  flex: 0 0 160px;
+}
+
+.badgeSlot {
+  min-width: 72px;
+}
+
+.details .date,
+.details .staleDate {
+  width: 72px;
+  flex: 0 0 72px;
+}
+
+.switchSlot {
+  margin-top: 8px;
+}
+
+.userRow > .switchSlot {
+  flex: 0 0 48px;
 }
 
 .emptyState {
@@ -88,20 +194,33 @@
   background: var(--surfaceGhostDefault);
 }
 
-.secondaryText {
+.emptyState .secondaryText {
   color: var(--textBaseSecondary);
 }
 
 @media (max-width: 760px) {
-  .userRow {
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .userRow > .identity,
-  .userRow > .details {
+  .identity,
+  .emailActions,
+  .details {
     width: 100%;
     min-width: 0;
     flex: 1 1 100%;
+  }
+
+  .userContent > .identity,
+  .userContent > .emailActions,
+  .userContent > .details {
+    flex: 1 1 100%;
+  }
+
+  .emailActions {
+    justify-content: flex-start;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .details {
+    justify-content: flex-start;
+    padding-left: 52px;
   }
 }

@@ -3,11 +3,13 @@ import type { TariffContract } from "@/@types/tariff";
 export const SCENARIO_NOW = "2026-03-05T12:00:00.000Z";
 
 const contractFixture: TariffContract = {
+  description:
+    "Полная доступность к модулям и аналитике системы, использование AI-агентов в рамках установленного тарифа.",
   tariffName: "Базовый",
   startsAt: "01.02.2026",
   endsAt: "31.12.2026",
   contractStatus: "active",
-  contractNumber: "452-26С",
+  contractNumber: "452-26",
   maxPaidUsers: 4,
   companies: [
     { id: "petr", name: "ООО СК Пётр и ученики", current: true },

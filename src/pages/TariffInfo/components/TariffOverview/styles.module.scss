@@ -1,8 +1,8 @@
-.summaryRow {
+.summaryGrid {
   width: 100%;
 }
 
-.summaryRow > .summaryColumn {
+.summaryGrid > .summaryColumn {
   min-width: 0;
   flex: 1 1 0;
 }
@@ -12,25 +12,44 @@
   box-sizing: border-box;
   width: 100%;
   border: 1px solid var(--borderDefault);
-  border-radius: 16px;
+  border-radius: 24px;
   background: var(--surfaceBasicDefault);
 }
 
 .summaryCard {
-  min-height: 188px;
-  padding: 24px;
+  padding: 32px;
+}
+
+.summaryPanel {
+  box-sizing: border-box;
+  min-height: 100px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--surfaceSecondaryDefault);
 }
 
 .section {
-  padding: 24px;
+  padding: 32px;
 }
 
-.label {
+.summaryPanel .label {
   color: var(--textBaseSecondary);
 }
 
 .summaryCard .statusValue {
   color: var(--textTechSuccess);
+}
+
+.summaryCard .description,
+.section .sectionCount {
+  color: var(--textBaseSecondary);
+}
+
+.description {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .modulePopover {
@@ -47,12 +66,17 @@
 }
 
 @media (max-width: 760px) {
-  .summaryRow {
+  .summaryGrid {
     flex-wrap: wrap;
   }
 
-  .summaryRow > .summaryColumn {
+  .summaryGrid > .summaryColumn {
     flex: 1 1 100%;
     max-width: 100%;
+  }
+
+  .summaryCard,
+  .section {
+    padding: 24px 16px;
   }
 }

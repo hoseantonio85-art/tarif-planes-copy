@@ -132,10 +132,6 @@ export const useTariffModel = () => {
   const clearFeedback = useCallback(() => setFeedback(null), []);
   const clearLimitWarning = useCallback(() => setLimitWarning(false), []);
 
-  const dialogUser = dialog
-    ? users.find((user) => user.id === dialog.userId) ?? null
-    : null;
-
   return {
     accessState,
     activePaidUsers,
@@ -148,7 +144,6 @@ export const useTariffModel = () => {
     confirmDeactivation,
     contract: { ...contract, users },
     dialog,
-    dialogUser,
     draftFilters,
     feedback,
     filterOpen,

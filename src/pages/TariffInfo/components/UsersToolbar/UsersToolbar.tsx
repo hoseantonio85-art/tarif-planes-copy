@@ -51,8 +51,8 @@ export const UsersToolbar = ({
   const quickItems = useMemo(
     () => [
       { id: "all", title: t("toolbar.all") },
-      { id: "in_tariff", title: t("toolbar.inTariff") },
-      { id: "out_of_tariff", title: t("toolbar.outOfTariff") },
+      { id: "in_tariff", title: t("toolbar.tariff") },
+      { id: "out_of_tariff", title: t("toolbar.guest") },
     ],
     [t],
   );
