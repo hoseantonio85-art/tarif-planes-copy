@@ -38,7 +38,7 @@ const tariff = {
   },
   modules: {
     title: "Модули сервиса",
-    included: "Доступны по договору — {{count}}",
+    included: "Входят в договор — {{count}}",
     excluded: "Не входят в договор — {{count}}",
     unavailableByContract: "Модуль не входит в текущий договор.",
     unavailableByRole: "Модуль входит в тариф, но недоступен для вашей роли.",

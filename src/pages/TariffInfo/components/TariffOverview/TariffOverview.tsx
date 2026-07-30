@@ -114,13 +114,17 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
             </Text>
             <Row gutter={8} wrap>
               {includedModules.map((module) => (
-                <Chips
+                <span
                   key={module.id}
-                  size="XS"
-                  item={{ id: module.id, title: module.name }}
-                  variant="fill"
-                  onChange={handleModuleClick}
-                />
+                  className={module.roleAvailable ? undefined : classes.unavailableModuleChip}
+                >
+                  <Chips
+                    size="XS"
+                    item={{ id: module.id, title: module.name }}
+                    variant={module.roleAvailable ? "outline" : "fill"}
+                    onChange={handleModuleClick}
+                  />
+                </span>
               ))}
             </Row>
           </Row>
@@ -130,13 +134,14 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
             </Text>
             <Row gutter={8} wrap>
               {excludedModules.map((module) => (
-                <Chips
-                  key={module.id}
-                  size="XS"
-                  item={{ id: module.id, title: module.name }}
-                  variant="outline"
-                  onChange={handleModuleClick}
-                />
+                <span key={module.id} className={classes.unavailableModuleChip}>
+                  <Chips
+                    size="XS"
+                    item={{ id: module.id, title: module.name }}
+                    variant="fill"
+                    onChange={handleModuleClick}
+                  />
+                </span>
               ))}
             </Row>
           </Row>
