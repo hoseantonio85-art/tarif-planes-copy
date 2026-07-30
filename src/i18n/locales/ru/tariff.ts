@@ -56,7 +56,7 @@ const tariff = {
     tariff: "Тариф",
     guest: "Гостевой",
     search: "Поиск",
-    searchPlaceholder: "Поиск по ФИО или email",
+    searchPlaceholder: "Поиск по ФИО, email или роли",
     filter: "Фильтр",
     filterTitle: "Фильтры пользователей",
     status: "Статус",

@@ -35,7 +35,12 @@ TariffInfo
 
 ## 4. State ownership и stable ids
 
-`useTariffModel` владеет пользователями, поиском, draft/applied filters, modal, feedback и воспроизводимыми query-сценариями. Чистые преобразования находятся в `src/helpers/tariff.ts` и покрыты тестами. Фильтры ролей используют только `RoleId`; локализованные названия ролей существуют исключительно на presentation boundary. Полнотекстовый поиск работает по ФИО и email.
+`useTariffModel` владеет пользователями, поиском, draft/applied filters, modal, feedback и воспроизводимыми query-сценариями. Чистые преобразования находятся в `src/helpers/tariff.ts` и покрыты тестами. Фильтры ролей используют только `RoleId`; локализованные названия ролей преобразуются в стабильные `RoleId` на presentation boundary. Полнотекстовый поиск работает по ФИО, email и отображаемой роли.
+
+Тарифный слот занимает пользователь со `status: active` и `inTariff: true`;
+отображаемая роль не участвует в подсчёте. Превышение лимита показывается
+закрываемым `Alert`, успешная активация — верхним `Notification`. Эти решения
+фиксируют последние согласованные продуктовые уточнения.
 
 ## 5. UI Kit map
 
@@ -60,6 +65,9 @@ TariffInfo
 | Empty | `?scenario=empty` | Список сообщает, что пользователи не найдены |
 | Limit reached | `?scenario=limit` | Активация блокируется Alert под фильтрами |
 | View-only | `?permission=view` | Switch disabled |
+| Paid activation | Отключить активного тарифного пользователя, затем включить другого | Счётчик уменьшается и возвращается к лимиту, показывается Notification |
+| Guest activation | `?scenario=limit`, включить Дмитрия Лебедева | Пользователь включается, счётчик тарифа не меняется |
+| Role search | Раскрыть поиск и ввести `Аудитор` | Найдены пользователи с ролью `ORMCLOUD_AUDITOR` |
 | Pending provisioning | `?access=pending_provisioning` | Полноэкранное состояние без sidebar |
 | Deactivated | `?access=deactivated` | Полноэкранное состояние без sidebar |
 | Provisioning failed | `?access=provisioning_failed` | Recoverable error и retry |

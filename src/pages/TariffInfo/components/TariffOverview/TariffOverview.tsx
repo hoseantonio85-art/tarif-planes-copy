@@ -73,7 +73,9 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
       <Row direction="column" gutter={16} align="stretch" className={classes.section}>
         <Row gutter={8} noFlex align="middle">
           <Title size="H500">{t("companies.title")}</Title>
-          <Text bold className={classes.sectionCount}>{contract.companies.length}</Text>
+          <Title size="H500" className={classes.sectionCount}>
+            {contract.companies.length}
+          </Title>
         </Row>
         <Row gutter={8} wrap>
           {contract.companies.map((company) => (
@@ -95,7 +97,9 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
       <Row direction="column" gutter={16} align="stretch" className={classes.section}>
         <Row gutter={8} noFlex align="middle">
           <Title size="H500">{t("modules.title")}</Title>
-          <Text bold className={classes.sectionCount}>{contract.modules.length}</Text>
+          <Title size="H500" className={classes.sectionCount}>
+            {contract.modules.length}
+          </Title>
         </Row>
         <Row gutter={8} wrap>
           {contract.modules.map((module) => (

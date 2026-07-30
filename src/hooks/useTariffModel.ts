@@ -4,6 +4,7 @@ import type {
   FeedbackId,
   PermissionMode,
   QuickFilter,
+  RoleId,
   SystemAccessState,
 } from "@/@types/tariff";
 import { ROLE_IDS } from "@/@types/tariff";
@@ -66,6 +67,7 @@ export const useTariffModel = () => {
   const [quickFilter, setQuickFilter] = useState<QuickFilter>("all");
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [queryRoleIds, setQueryRoleIds] = useState<readonly RoleId[]>([]);
   const [draftFilters, setDraftFilters] = useState<AppliedUserFilters>(DEFAULT_FILTERS);
   const [appliedFilters, setAppliedFilters] = useState<AppliedUserFilters>(DEFAULT_FILTERS);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -78,12 +80,27 @@ export const useTariffModel = () => {
     [users],
   );
   const filteredUsers = useMemo(
-    () => filterUsers(searchDocuments, query, quickFilter, appliedFilters, SCENARIO_NOW),
-    [appliedFilters, query, quickFilter, searchDocuments],
+    () =>
+      filterUsers(
+        searchDocuments,
+        query,
+        queryRoleIds,
+        quickFilter,
+        appliedFilters,
+        SCENARIO_NOW,
+      ),
+    [appliedFilters, query, queryRoleIds, quickFilter, searchDocuments],
   );
   const activePaidUsers = useMemo(() => getActivePaidUsersCount(users), [users]);
 
   const toggleSearch = useCallback(() => setSearchOpen((current) => !current), []);
+  const updateQuery = useCallback(
+    (value: string, matchingRoleIds: readonly RoleId[]) => {
+      setQuery(value);
+      setQueryRoleIds(matchingRoleIds);
+    },
+    [],
+  );
   const openFilters = useCallback(() => {
     setDraftFilters(appliedFilters);
     setFilterOpen(true);
@@ -161,7 +178,7 @@ export const useTariffModel = () => {
     roleIds: ROLE_IDS,
     searchOpen,
     setDraftFilters,
-    setQuery,
+    setQuery: updateQuery,
     setQuickFilter,
     showFeedback,
     toggleSearch,

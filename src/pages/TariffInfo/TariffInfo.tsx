@@ -5,7 +5,6 @@ import {
   Col,
   Notification,
   Row,
-  Text,
   Title,
   notification,
 } from "@sber-orm/ui-kit";
@@ -15,12 +14,12 @@ import { useTariffModel } from "@/hooks/useTariffModel";
 import {
   SystemAccessState,
   SystemLoadingState,
-} from "@/pages/TariffInfo/components/SystemAccessState/SystemAccessState";
-import { TariffOverview } from "@/pages/TariffInfo/components/TariffOverview/TariffOverview";
-import { TariffSidebar } from "@/pages/TariffInfo/components/TariffSidebar/TariffSidebar";
-import { UserAccessModal } from "@/pages/TariffInfo/components/UserAccessModal/UserAccessModal";
-import { UsersList } from "@/pages/TariffInfo/components/UsersList/UsersList";
-import { UsersToolbar } from "@/pages/TariffInfo/components/UsersToolbar/UsersToolbar";
+} from "@/pages/TariffInfo/components/SystemAccessState";
+import { TariffOverview } from "@/pages/TariffInfo/components/TariffOverview";
+import { TariffSidebar } from "@/pages/TariffInfo/components/TariffSidebar";
+import { UserAccessModal } from "@/pages/TariffInfo/components/UserAccessModal";
+import { UsersList } from "@/pages/TariffInfo/components/UsersList";
+import { UsersToolbar } from "@/pages/TariffInfo/components/UsersToolbar";
 import classes from "./styles.module.scss";
 
 const FullWidthAlert = (props: ComponentProps<typeof Alert>) => (
@@ -107,12 +106,12 @@ const TariffInfo = () => {
           <Row direction="column" gutter={24} align="stretch" className={classes.usersSection}>
             <Row gutter={8} align="middle" noFlex>
               <Title size="H500">{t("users.title")}</Title>
-              <Text bold className={classes.sectionCount}>
+              <Title size="H500" className={classes.sectionCount}>
                 {t("users.count", {
                 active: model.activePaidUsers,
                 max: model.contract.maxPaidUsers,
               })}
-              </Text>
+              </Title>
             </Row>
             <Row direction="column" gutter={32} align="stretch">
               <Row direction="column" gutter={12} align="stretch">

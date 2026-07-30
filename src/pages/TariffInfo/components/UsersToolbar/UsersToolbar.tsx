@@ -19,7 +19,7 @@ interface UsersToolbarProps {
   searchOpen: boolean;
   toggleSearch: () => void;
   query: string;
-  setQuery: (query: string) => void;
+  setQuery: (query: string, matchingRoleIds: readonly RoleId[]) => void;
   filterOpen: boolean;
   openFilters: () => void;
   closeFilters: () => void;
@@ -76,7 +76,18 @@ export const UsersToolbar = ({
     (id: string) => setQuickFilter(id as QuickFilter),
     [setQuickFilter],
   );
-  const handleSearchChange = useCallback((value: string) => setQuery(value), [setQuery]);
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      const normalizedValue = value.trim().toLocaleLowerCase("ru");
+      const matchingRoleIds = normalizedValue
+        ? roleIds.filter((roleId) =>
+            t(`roles.${roleId}`).toLocaleLowerCase("ru").includes(normalizedValue),
+          )
+        : [];
+      setQuery(value, matchingRoleIds);
+    },
+    [roleIds, setQuery, t],
+  );
   const handleStatusChange = useCallback(
     (id: string) =>
       setDraftFilters((current) => ({

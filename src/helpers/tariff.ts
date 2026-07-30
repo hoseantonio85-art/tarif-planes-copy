@@ -95,6 +95,7 @@ export const createUserSearchDocuments = (
 export const filterUsers = (
   documents: UserSearchDocument[],
   query: string,
+  queryRoleIds: readonly RoleId[],
   quickFilter: QuickFilter,
   filters: AppliedUserFilters,
   nowIso: string,
@@ -103,7 +104,10 @@ export const filterUsers = (
 
   return documents
     .filter(({ user, searchText }) => {
-      const matchesQuery = !normalizedQuery || searchText.includes(normalizedQuery);
+      const matchesQuery =
+        !normalizedQuery ||
+        searchText.includes(normalizedQuery) ||
+        user.roleIds.some((roleId) => queryRoleIds.includes(roleId));
       const matchesQuick =
         quickFilter === "all" ||
         (quickFilter === "in_tariff" && user.inTariff) ||
