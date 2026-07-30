@@ -5,17 +5,17 @@ describe("TariffStore", () => {
   it("does not activate a paid user above the tariff limit", () => {
     const store = createTariffStore("?scenario=limit");
 
-    store.requestUserStatusChange("maria");
+    store.requestUserStatusChange("elena");
 
-    expect(store.contract.users.find((user) => user.id === "maria")?.status).toBe(
+    expect(store.contract.users.find((user) => user.id === "elena")?.status).toBe(
       "deactivated",
     );
     expect(store.limitWarning).toBe(true);
 
     store.clearLimitWarning();
-    store.requestUserStatusChange("maria");
+    store.requestUserStatusChange("elena");
 
-    expect(store.contract.users.find((user) => user.id === "maria")?.status).toBe(
+    expect(store.contract.users.find((user) => user.id === "elena")?.status).toBe(
       "deactivated",
     );
     expect(store.limitWarning).toBe(true);
@@ -34,14 +34,14 @@ describe("TariffStore", () => {
     expect(store.contract.users.find((user) => user.id === "anna")?.status).toBe(
       "deactivated",
     );
-    expect(store.activePaidUsers).toBe(3);
+    expect(store.activePaidUsers).toBe(1);
 
-    store.requestUserStatusChange("maria");
+    store.requestUserStatusChange("elena");
 
-    expect(store.contract.users.find((user) => user.id === "maria")?.status).toBe(
+    expect(store.contract.users.find((user) => user.id === "elena")?.status).toBe(
       "active",
     );
-    expect(store.activePaidUsers).toBe(4);
+    expect(store.activePaidUsers).toBe(2);
     expect(store.feedback).toBe("activated");
   });
 
@@ -49,9 +49,9 @@ describe("TariffStore", () => {
     const store = createTariffStore("?scenario=limit");
     const activePaidUsers = store.activePaidUsers;
 
-    store.requestUserStatusChange("dmitry");
+    store.requestUserStatusChange("maria");
 
-    expect(store.contract.users.find((user) => user.id === "dmitry")?.status).toBe(
+    expect(store.contract.users.find((user) => user.id === "maria")?.status).toBe(
       "active",
     );
     expect(store.activePaidUsers).toBe(activePaidUsers);

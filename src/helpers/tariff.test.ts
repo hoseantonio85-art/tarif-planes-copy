@@ -8,44 +8,41 @@ import {
   getUserAvatarTone,
   getPrimaryRoleId,
   getUserInitials,
+  isPaidUser,
   isStaleUser,
   updateUserStatus,
 } from "@/helpers/tariff";
 
 const users: TariffUser[] = [
   {
-    id: "paid",
-    fullName: "Анна Кузнецова",
+    id: "risk-manager",
+    fullName: "Кузнецова Анна Сергеевна",
     email: "anna@example.ru",
-    roleIds: ["ORMCLOUD_AUDITOR", "ORMCLOUD_USER"],
-    inTariff: true,
+    roleIds: ["ORMCLOUD_AUDITOR", "ORMCLOUD_RISKMANAGER"],
     status: "active",
     lastLogin: "20.12.2025",
   },
   {
-    id: "outside",
-    fullName: "Олег Смирнов",
+    id: "non-paid",
+    fullName: "Смирнов Олег Викторович",
     email: "oleg@example.ru",
-    roleIds: ["ORMCLOUD_RISKMANAGER"],
-    inTariff: false,
+    roleIds: ["ORMCLOUD_AUDITOR"],
     status: "active",
     lastLogin: "01.03.2026",
   },
   {
-    id: "inactive",
-    fullName: "Мария Дмитриева",
-    email: "maria@example.ru",
-    roleIds: ["ORMCLOUD_ANALYST"],
-    inTariff: true,
+    id: "inactive-paid",
+    fullName: "Тимофеева Елена Андреевна",
+    email: "elena@example.ru",
+    roleIds: ["ORMCLOUD_RISKMANAGER"],
     status: "deactivated",
     lastLogin: "01.03.2026",
   },
   {
     id: "coordinator",
-    fullName: "Coordinator",
+    fullName: "Волков Александр Игоревич",
     email: "coordinator@example.ru",
     roleIds: ["ORMCLOUD_COORDINATOR"],
-    inTariff: true,
     status: "active",
     lastLogin: "01.03.2026",
   },
@@ -58,16 +55,19 @@ const filters: AppliedUserFilters = {
 };
 
 describe("tariff selectors", () => {
-  it("counts every active user inside the tariff regardless of role", () => {
+  it("treats only risk managers and coordinators as paid users", () => {
+    expect(isPaidUser(users[0])).toBe(true);
+    expect(isPaidUser(users[1])).toBe(false);
+    expect(isPaidUser(users[3])).toBe(true);
     expect(getActivePaidUsersCount(users)).toBe(2);
   });
 
-  it("prioritizes a paid role over display order", () => {
-    expect(getPrimaryRoleId(users[0])).toBe("ORMCLOUD_USER");
+  it("prioritizes a paid role for display", () => {
+    expect(getPrimaryRoleId(users[0])).toBe("ORMCLOUD_RISKMANAGER");
   });
 
   it("builds initials from the first two name parts", () => {
-    expect(getUserInitials("  Анна   Кузнецова Дмитриевна ")).toBe("АК");
+    expect(getUserInitials("  Кузнецова   Анна Сергеевна ")).toBe("КА");
   });
 
   it("keeps avatar colors stable while distributing users across the palette", () => {
@@ -83,7 +83,7 @@ describe("tariff selectors", () => {
   it("searches by user fields while filtering roles by stable ids", () => {
     const documents = createUserSearchDocuments(users);
     expect(filterUsers(documents, "анна", [], "all", filters, "2026-03-05")).toHaveLength(1);
-    expect(filterUsers(documents, "oleg@", [], "out_of_tariff", filters, "2026-03-05")[0].id).toBe("outside");
+    expect(filterUsers(documents, "oleg@", [], "out_of_tariff", filters, "2026-03-05")[0].id).toBe("non-paid");
     expect(
       filterUsers(
         documents,
@@ -92,29 +92,31 @@ describe("tariff selectors", () => {
         "all",
         filters,
         "2026-03-05",
-      )[0].id,
-    ).toBe("outside");
+      ),
+    ).toHaveLength(2);
     expect(
       filterUsers(
         documents,
         "",
         [],
         "all",
-        { ...filters, roleId: "ORMCLOUD_ANALYST", status: "deactivated" },
+        { ...filters, roleId: "ORMCLOUD_RISKMANAGER", status: "deactivated" },
         "2026-03-05",
       )[0].id,
-    ).toBe("inactive");
+    ).toBe("inactive-paid");
   });
 
-  it("blocks any in-tariff activation at the limit", () => {
-    expect(getActivationOutcome({ ...users[2], status: "deactivated" }, 2, 2)).toBe("limit");
-    expect(getActivationOutcome({ ...users[1], status: "deactivated" }, 2, 2)).toBe("activate");
+  it("blocks only a paid-role activation at the limit", () => {
+    expect(getActivationOutcome(users[2], 2, 2)).toBe("limit");
+    expect(
+      getActivationOutcome({ ...users[1], status: "deactivated" }, 2, 2),
+    ).toBe("activate");
   });
 
   it("updates status without removing the user or mutating the source", () => {
-    const updated = updateUserStatus(users, "inactive", "active");
+    const updated = updateUserStatus(users, "inactive-paid", "active");
     expect(updated).toHaveLength(users.length);
-    expect(updated.find((user) => user.id === "inactive")?.status).toBe("active");
-    expect(users.find((user) => user.id === "inactive")?.status).toBe("deactivated");
+    expect(updated.find((user) => user.id === "inactive-paid")?.status).toBe("active");
+    expect(users.find((user) => user.id === "inactive-paid")?.status).toBe("deactivated");
   });
 });

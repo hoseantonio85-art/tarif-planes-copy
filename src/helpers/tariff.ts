@@ -8,10 +8,15 @@ import type {
 
 const ROLE_PRIORITY: readonly RoleId[] = [
   "ORMCLOUD_RISKMANAGER",
-  "ORMCLOUD_USER",
   "ORMCLOUD_COORDINATOR",
+  "ORMCLOUD_USER",
   "ORMCLOUD_ANALYST",
   "ORMCLOUD_AUDITOR",
+];
+
+export const PAID_ROLE_IDS: readonly RoleId[] = [
+  "ORMCLOUD_RISKMANAGER",
+  "ORMCLOUD_COORDINATOR",
 ];
 
 export const USER_AVATAR_TONES = [
@@ -25,8 +30,11 @@ export const USER_AVATAR_TONES = [
 
 export type UserAvatarTone = (typeof USER_AVATAR_TONES)[number];
 
+export const isPaidUser = (user: TariffUser): boolean =>
+  user.roleIds.some((roleId) => PAID_ROLE_IDS.includes(roleId));
+
 export const consumesPaidSlot = (user: TariffUser): boolean =>
-  user.status === "active" && user.inTariff;
+  user.status === "active" && isPaidUser(user);
 
 export const getActivePaidUsersCount = (users: TariffUser[]): number =>
   users.filter(consumesPaidSlot).length;
@@ -110,8 +118,8 @@ export const filterUsers = (
         user.roleIds.some((roleId) => queryRoleIds.includes(roleId));
       const matchesQuick =
         quickFilter === "all" ||
-        (quickFilter === "in_tariff" && user.inTariff) ||
-        (quickFilter === "out_of_tariff" && !user.inTariff);
+        (quickFilter === "in_tariff" && isPaidUser(user)) ||
+        (quickFilter === "out_of_tariff" && !isPaidUser(user));
       const matchesStatus = filters.status === "all" || user.status === filters.status;
       const matchesRole =
         filters.roleId === "all" || user.roleIds.includes(filters.roleId);
