@@ -79,17 +79,18 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
         </Row>
         <Row gutter={8} wrap>
           {contract.companies.map((company) => (
-            <Chips
-              key={company.id}
-              size="XS"
-              selected={company.current}
-              item={{
-                id: company.id,
-                title: company.current
-                  ? `${company.name} · ${t("companies.current")}`
-                  : company.name,
-              }}
-            />
+            <span key={company.id} className={classes.companyChip}>
+              <Chips
+                size="XS"
+                selected={company.current}
+                item={{
+                  id: company.id,
+                  title: company.current
+                    ? `${company.name} · ${t("companies.current")}`
+                    : company.name,
+                }}
+              />
+            </span>
           ))}
         </Row>
       </Row>
@@ -122,13 +123,17 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
           onClose={closePopover}
           title={selectedModule.name}
         >
-          <Row direction="column" gutter={16} align="stretch" className={classes.modulePopover}>
-            {selectedModule.description && <Text size="sm">{selectedModule.description}</Text>}
-            {!selectedModule.roleAvailable && (
-              <Text size="sm" className={classes.unavailableText}>
-                {t("modules.unavailableByRole")}
-              </Text>
-            )}
+          <Row direction="column" gutter={12} align="stretch" className={classes.modulePopover}>
+            <Row direction="column" gutter={8} align="stretch">
+              {selectedModule.description && (
+                <Text size="md">{selectedModule.description}</Text>
+              )}
+              {!selectedModule.roleAvailable && (
+                <Text size="md" className={classes.unavailableText}>
+                  {t("modules.unavailableByRole")}
+                </Text>
+              )}
+            </Row>
             <Button
               size="S"
               variant="secondary"

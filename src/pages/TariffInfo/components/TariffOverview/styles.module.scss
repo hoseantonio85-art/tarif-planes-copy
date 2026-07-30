@@ -54,11 +54,20 @@
 
 .modulePopover {
   width: 304px;
-  padding-top: 12px;
+  padding-top: 8px;
 }
 
 .moduleAction {
   width: 100%;
+}
+
+.moduleAction:disabled {
+  pointer-events: none;
+}
+
+.companyChip {
+  display: inline-flex;
+  pointer-events: none;
 }
 
 .unavailableText {
