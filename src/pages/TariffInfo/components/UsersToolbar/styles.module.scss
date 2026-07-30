@@ -10,6 +10,20 @@
   padding-top: 8px;
 }
 
+.filterLabel {
+  color: var(--textBaseSecondary) !important;
+}
+
+.filterToggle,
+.filterActions {
+  width: 100%;
+}
+
+.filterAction {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
 @media (max-width: 560px) {
   .filterPopover {
     width: min(320px, 82vw);

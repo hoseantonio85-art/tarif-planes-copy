@@ -146,6 +146,7 @@ export const UsersToolbar = ({
         <FieldSearch
           search={{ value: query }}
           handleChange={handleSearchChange}
+          label=""
           placeholder={t("toolbar.searchPlaceholder")}
           size="M"
           fullWidth
@@ -162,7 +163,9 @@ export const UsersToolbar = ({
           <Row direction="column" gutter={20} align="stretch" className={classes.filterPopover}>
             <Title size="H400">{t("toolbar.filterTitle")}</Title>
             <Row direction="column" gutter={8} align="stretch">
-              <Text size="sm" bold>{t("toolbar.status")}</Text>
+              <Text size="sm" bold className={classes.filterLabel}>
+                {t("toolbar.status")}
+              </Text>
               <RadioChips
                 items={statusItems}
                 value={draftFilters.status}
@@ -171,7 +174,9 @@ export const UsersToolbar = ({
               />
             </Row>
             <Row direction="column" gutter={8} align="stretch">
-              <Text size="sm" bold>{t("toolbar.role")}</Text>
+              <Text size="sm" bold className={classes.filterLabel}>
+                {t("toolbar.role")}
+              </Text>
               <RadioChips
                 items={roleItems}
                 value={draftFilters.roleId}
@@ -179,17 +184,37 @@ export const UsersToolbar = ({
                 wrap
               />
             </Row>
-            <Switch
-              checked={draftFilters.staleOnly}
-              label={t("toolbar.staleOnly")}
-              onChange={handleStaleChange}
-              size="sm"
-            />
-            <Row gutter={8} justify="end">
-              <Button size="S" variant="ghost" onClick={resetFilters}>
+            <Row
+              justify="between"
+              align="middle"
+              gutter={16}
+              className={classes.filterToggle}
+            >
+              <Text size="md" bold>{t("toolbar.staleOnly")}</Text>
+              <Switch
+                checked={draftFilters.staleOnly}
+                onChange={handleStaleChange}
+                size="md"
+                inputProps={{ "aria-label": t("toolbar.staleOnly") }}
+              />
+            </Row>
+            <Row gutter={8} className={classes.filterActions}>
+              <Button
+                size="S"
+                variant="secondary"
+                fullWidth
+                className={classes.filterAction}
+                onClick={resetFilters}
+              >
                 {t("toolbar.reset")}
               </Button>
-              <Button size="S" onClick={applyFilters}>
+              <Button
+                size="S"
+                variant="primary"
+                fullWidth
+                className={classes.filterAction}
+                onClick={applyFilters}
+              >
                 {t("toolbar.apply")}
               </Button>
             </Row>
