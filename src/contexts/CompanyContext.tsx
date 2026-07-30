@@ -31,7 +31,7 @@ const companies: Company[] = [
   {
     id: "1",
     name: "ООО СК Пётр и ученики",
-    tariff: "Профессиональный",
+    tariff: "Премиум",
     tariffStatus: "active",
     contractNumber: "452-26",
     contractStart: "01.02.2026",
@@ -65,7 +65,7 @@ const companies: Company[] = [
   {
     id: "2",
     name: "АО Финансовая Группа «Волга»",
-    tariff: "Базовый",
+    tariff: "Премиум",
     tariffStatus: "expiring",
     contractNumber: "318-25",
     contractStart: "15.03.2025",

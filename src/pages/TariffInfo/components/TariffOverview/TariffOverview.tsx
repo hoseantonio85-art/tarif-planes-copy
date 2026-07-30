@@ -36,6 +36,11 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
   const currentCompanyName =
     contract.companies.find((company) => company.current)?.name ??
     contract.companies[0]?.name;
+  const includedModules = contract.modules.filter((module) => module.includedInContract);
+  const excludedModules = contract.modules.filter((module) => !module.includedInContract);
+  const canOpenSelectedModule = Boolean(
+    selectedModule?.includedInContract && selectedModule.roleAvailable,
+  );
 
   return (
     <Row direction="column" gutter={24} align="stretch">
@@ -102,16 +107,39 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
             {contract.modules.length}
           </Title>
         </Row>
-        <Row gutter={8} wrap>
-          {contract.modules.map((module) => (
-            <Chips
-              key={module.id}
-              size="XS"
-              item={{ id: module.id, title: module.name }}
-              variant={module.roleAvailable ? "fill" : "outline"}
-              onChange={handleModuleClick}
-            />
-          ))}
+        <Row direction="column" gutter={12} align="stretch">
+          <Row direction="column" gutter={8} align="stretch">
+            <Text size="sm" className={classes.moduleGroupLabel}>
+              {t("modules.included", { count: includedModules.length })}
+            </Text>
+            <Row gutter={8} wrap>
+              {includedModules.map((module) => (
+                <Chips
+                  key={module.id}
+                  size="XS"
+                  item={{ id: module.id, title: module.name }}
+                  variant="fill"
+                  onChange={handleModuleClick}
+                />
+              ))}
+            </Row>
+          </Row>
+          <Row direction="column" gutter={8} align="stretch">
+            <Text size="sm" className={classes.moduleGroupLabel}>
+              {t("modules.excluded", { count: excludedModules.length })}
+            </Text>
+            <Row gutter={8} wrap>
+              {excludedModules.map((module) => (
+                <Chips
+                  key={module.id}
+                  size="XS"
+                  item={{ id: module.id, title: module.name }}
+                  variant="outline"
+                  onChange={handleModuleClick}
+                />
+              ))}
+            </Row>
+          </Row>
         </Row>
       </Row>
 
@@ -125,10 +153,13 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
         >
           <Row direction="column" gutter={12} align="stretch" className={classes.modulePopover}>
             <Row direction="column" gutter={8} align="stretch">
-              {selectedModule.description && (
-                <Text size="md">{selectedModule.description}</Text>
+              <Text size="md">{selectedModule.description}</Text>
+              {!selectedModule.includedInContract && (
+                <Text size="md" className={classes.unavailableText}>
+                  {t("modules.unavailableByContract")}
+                </Text>
               )}
-              {!selectedModule.roleAvailable && (
+              {selectedModule.includedInContract && !selectedModule.roleAvailable && (
                 <Text size="md" className={classes.unavailableText}>
                   {t("modules.unavailableByRole")}
                 </Text>
@@ -138,13 +169,15 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
               size="S"
               variant="secondary"
               iconAfter="external"
-              disabled={!selectedModule.roleAvailable}
+              disabled={!canOpenSelectedModule}
               onClick={handleServiceAction}
               className={classes.moduleAction}
             >
-              {selectedModule.roleAvailable
+              {canOpenSelectedModule
                 ? t("modules.serviceAction")
-                : t("modules.actionDisabled")}
+                : selectedModule.includedInContract
+                  ? t("modules.actionDisabled")
+                  : t("modules.notIncludedAction")}
             </Button>
           </Row>
         </Popover>

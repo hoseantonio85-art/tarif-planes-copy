@@ -15,6 +15,7 @@ import {
   getPrimaryRoleId,
   getUserAvatarTone,
   getUserInitials,
+  isPaidUser,
   isStaleUser,
 } from "@/helpers/tariff";
 import { SCENARIO_NOW } from "@/data/tariffFixtures";
@@ -33,6 +34,7 @@ const UserRow = ({ user, permissionMode, onStatusChange }: UserRowProps) => {
   const initials = getUserInitials(user.fullName);
   const avatarTone = getUserAvatarTone(user.id);
   const stale = isStaleUser(user, SCENARIO_NOW);
+  const paid = isPaidUser(user);
 
   const handleCopy = useCallback(async () => {
     const copied = await copyToClipboard(user.email, { silent: true });
@@ -94,8 +96,8 @@ const UserRow = ({ user, permissionMode, onStatusChange }: UserRowProps) => {
 
         <Row gutter={16} justify="between" align="middle" className={classes.details}>
           <Row noFlex justify="end" className={classes.badgeSlot}>
-            <Badge variant={user.inTariff ? "violet" : "gray"}>
-              {user.inTariff ? t("users.tariff") : t("users.guest")}
+            <Badge variant={paid ? "violet" : "gray"}>
+              {paid ? t("users.tariff") : t("users.guest")}
             </Badge>
           </Row>
           <Text size="sm" className={stale ? classes.staleDate : classes.date}>

@@ -17,7 +17,17 @@ export type SystemAccessState =
   | "deactivated"
   | "provisioning_failed";
 
-export type ModuleId = "risks" | "events" | "measures" | "analytics";
+export type ModuleId =
+  | "risks"
+  | "events"
+  | "measures"
+  | "ai_assessment"
+  | "behavior_risks"
+  | "analytics"
+  | "counterparties"
+  | "ai_monitoring"
+  | "limit_campaign"
+  | "knowledge_base";
 
 export interface ContractCompany {
   id: string;
@@ -28,7 +38,8 @@ export interface ContractCompany {
 export interface TariffModule {
   id: ModuleId;
   name: string;
-  description?: string;
+  description: string;
+  includedInContract: boolean;
   roleAvailable: boolean;
 }
 
@@ -37,7 +48,6 @@ export interface TariffUser {
   fullName: string;
   email: string;
   roleIds: RoleId[];
-  inTariff: boolean;
   status: UserStatus;
   lastLogin: string;
 }
