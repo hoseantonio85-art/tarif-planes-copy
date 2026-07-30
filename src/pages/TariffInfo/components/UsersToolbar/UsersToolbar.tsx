@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef } from "react";
 import {
   Button,
+  Chips,
   FieldSearch,
   Popover,
   RadioChips,
@@ -162,23 +163,35 @@ export const UsersToolbar = ({
               <Text size="sm" bold className={classes.filterLabel}>
                 {t("toolbar.status")}
               </Text>
-              <RadioChips
-                items={statusItems}
-                value={draftFilters.status}
-                onChange={handleStatusChange}
-                wrap
-              />
+              <Row gutter={4} wrap>
+                {statusItems.map((item) => (
+                  <Chips
+                    key={item.id}
+                    size="XS"
+                    variant="outline"
+                    item={item}
+                    selected={draftFilters.status === item.id}
+                    onChange={handleStatusChange}
+                  />
+                ))}
+              </Row>
             </Row>
             <Row direction="column" gutter={8} align="stretch">
               <Text size="sm" bold className={classes.filterLabel}>
                 {t("toolbar.role")}
               </Text>
-              <RadioChips
-                items={roleItems}
-                value={draftFilters.roleId}
-                onChange={handleRoleChange}
-                wrap
-              />
+              <Row gutter={4} wrap>
+                {roleItems.map((item) => (
+                  <Chips
+                    key={item.id}
+                    size="XS"
+                    variant="outline"
+                    item={item}
+                    selected={draftFilters.roleId === item.id}
+                    onChange={handleRoleChange}
+                  />
+                ))}
+              </Row>
             </Row>
             <Row
               justify="between"
