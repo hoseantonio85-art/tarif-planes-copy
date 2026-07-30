@@ -82,12 +82,23 @@ describe("tariff selectors", () => {
 
   it("searches by user fields while filtering roles by stable ids", () => {
     const documents = createUserSearchDocuments(users);
-    expect(filterUsers(documents, "анна", "all", filters, "2026-03-05")).toHaveLength(1);
-    expect(filterUsers(documents, "oleg@", "out_of_tariff", filters, "2026-03-05")[0].id).toBe("outside");
+    expect(filterUsers(documents, "анна", [], "all", filters, "2026-03-05")).toHaveLength(1);
+    expect(filterUsers(documents, "oleg@", [], "out_of_tariff", filters, "2026-03-05")[0].id).toBe("outside");
+    expect(
+      filterUsers(
+        documents,
+        "риск-менеджер",
+        ["ORMCLOUD_RISKMANAGER"],
+        "all",
+        filters,
+        "2026-03-05",
+      )[0].id,
+    ).toBe("outside");
     expect(
       filterUsers(
         documents,
         "",
+        [],
         "all",
         { ...filters, roleId: "ORMCLOUD_ANALYST", status: "deactivated" },
         "2026-03-05",

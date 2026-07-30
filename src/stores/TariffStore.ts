@@ -48,6 +48,7 @@ export const TariffStore = types
     ),
     searchOpen: false,
     query: "",
+    queryRoleIds: types.frozen<readonly RoleId[]>(),
     draftFilters: types.frozen<AppliedUserFilters>(),
     appliedFilters: types.frozen<AppliedUserFilters>(),
     filterOpen: false,
@@ -77,6 +78,7 @@ export const TariffStore = types
       return filterUsers(
         createUserSearchDocuments(Array.from(self.users)),
         self.query,
+        self.queryRoleIds,
         self.quickFilter,
         self.appliedFilters,
         SCENARIO_NOW,
@@ -98,8 +100,9 @@ export const TariffStore = types
     toggleSearch() {
       self.searchOpen = !self.searchOpen;
     },
-    setQuery(query: string) {
+    setQuery(query: string, matchingRoleIds: readonly RoleId[]) {
       self.query = query;
+      self.queryRoleIds = cast([...matchingRoleIds]);
     },
     openFilters() {
       self.draftFilters = cast({ ...self.appliedFilters });
@@ -144,14 +147,14 @@ export const TariffStore = types
         return;
       }
 
-      self.users.replace(cast(updateUserStatus(users, userId, "active")));
+      self.users.replace(updateUserStatus(users, userId, "active"));
       self.limitWarning = false;
       self.feedback = "activated";
     },
     confirmDeactivation() {
       if (!self.dialogUserId) return;
       self.users.replace(
-        cast(updateUserStatus(Array.from(self.users), self.dialogUserId, "deactivated")),
+        updateUserStatus(Array.from(self.users), self.dialogUserId, "deactivated"),
       );
       self.dialogUserId = null;
       self.limitWarning = false;
@@ -197,6 +200,7 @@ export const createInitialTariffStoreSnapshot = (
     permissionMode: params.get("permission") === "view" ? "view" : "edit",
     isLoading: scenario === "loading",
     isRefreshing: scenario === "refreshing",
+    queryRoleIds: [],
     draftFilters: DEFAULT_FILTERS,
     appliedFilters: DEFAULT_FILTERS,
   };

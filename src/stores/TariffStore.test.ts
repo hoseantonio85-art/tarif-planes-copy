@@ -11,6 +11,14 @@ describe("TariffStore", () => {
       "deactivated",
     );
     expect(store.limitWarning).toBe(true);
+
+    store.clearLimitWarning();
+    store.requestUserStatusChange("maria");
+
+    expect(store.contract.users.find((user) => user.id === "maria")?.status).toBe(
+      "deactivated",
+    );
+    expect(store.limitWarning).toBe(true);
   });
 
   it("requires confirmation before deactivation", () => {
@@ -26,6 +34,39 @@ describe("TariffStore", () => {
     expect(store.contract.users.find((user) => user.id === "anna")?.status).toBe(
       "deactivated",
     );
+    expect(store.activePaidUsers).toBe(3);
+
+    store.requestUserStatusChange("maria");
+
+    expect(store.contract.users.find((user) => user.id === "maria")?.status).toBe(
+      "active",
+    );
+    expect(store.activePaidUsers).toBe(4);
+    expect(store.feedback).toBe("activated");
+  });
+
+  it("activates a guest without consuming a tariff slot", () => {
+    const store = createTariffStore("?scenario=limit");
+    const activePaidUsers = store.activePaidUsers;
+
+    store.requestUserStatusChange("dmitry");
+
+    expect(store.contract.users.find((user) => user.id === "dmitry")?.status).toBe(
+      "active",
+    );
+    expect(store.activePaidUsers).toBe(activePaidUsers);
+    expect(store.limitWarning).toBe(false);
+  });
+
+  it("does not change users in view-only mode", () => {
+    const store = createTariffStore("?permission=view");
+
+    store.requestUserStatusChange("anna");
+
+    expect(store.dialog).toBeNull();
+    expect(store.contract.users.find((user) => user.id === "anna")?.status).toBe(
+      "active",
+    );
   });
 
   it("applies draft filters only after confirmation", () => {
@@ -37,5 +78,29 @@ describe("TariffStore", () => {
 
     store.applyFilters();
     expect(store.filteredUsers.map((user) => user.id)).toEqual(["oleg", "natalia"]);
+  });
+
+  it("searches by localized role through stable role ids", () => {
+    const store = createTariffStore();
+
+    store.setQuery("аудитор", ["ORMCLOUD_AUDITOR"]);
+
+    expect(store.filteredUsers.map((user) => user.id)).toEqual(["oleg", "natalia"]);
+  });
+
+  it("creates reproducible loading, refreshing, empty and access states", () => {
+    expect(createTariffStore("?scenario=loading").isLoading).toBe(true);
+    expect(createTariffStore("?scenario=refreshing").isRefreshing).toBe(true);
+    expect(createTariffStore("?scenario=empty").filteredUsers).toHaveLength(0);
+    expect(
+      createTariffStore("?access=pending_provisioning").accessState,
+    ).toBe("pending_provisioning");
+    expect(createTariffStore("?access=deactivated").accessState).toBe(
+      "deactivated",
+    );
+
+    const failedStore = createTariffStore("?access=provisioning_failed");
+    failedStore.retryProvisioning();
+    expect(failedStore.accessState).toBe("active");
   });
 });
