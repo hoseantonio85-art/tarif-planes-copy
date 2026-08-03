@@ -30,29 +30,15 @@
 }
 
 .tariffDetailsButton {
-  width: 24px;
-  height: 24px;
   flex: 0 0 24px;
-  border-radius: 8px;
-  background: var(--buttonTertiaryDefault);
-  color: var(--textBaseSecondary);
   opacity: 0;
+  pointer-events: none;
   transition: opacity 160ms ease;
 }
 
 .tariffPanel {
-  height: auto !important;
-  padding: 16px !important;
-  text-align: left;
-  color: var(--textBaseDefault) !important;
   cursor: pointer;
-}
-
-.tariffPanel > div,
-.tariffPanel > div > div,
-.tariffPanelContent {
-  width: 100%;
-  padding: 0 !important;
+  transition: background-color 160ms ease;
 }
 
 .tariffPanel:hover,
@@ -66,8 +52,9 @@
 }
 
 .tariffPanel:hover .tariffDetailsButton,
-.tariffPanel:focus-visible .tariffDetailsButton {
+.tariffPanel:focus-within .tariffDetailsButton {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .section {
