@@ -30,16 +30,44 @@
 }
 
 .tariffDetailsButton {
-  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  border-radius: 8px;
+  background: var(--buttonTertiaryDefault);
+  color: var(--textBaseSecondary);
   opacity: 0;
-  pointer-events: none;
   transition: opacity 160ms ease;
 }
 
+.tariffPanel {
+  height: auto !important;
+  padding: 16px !important;
+  text-align: left;
+  color: var(--textBaseDefault) !important;
+  cursor: pointer;
+}
+
+.tariffPanel > div,
+.tariffPanel > div > div,
+.tariffPanelContent {
+  width: 100%;
+  padding: 0 !important;
+}
+
+.tariffPanel:hover,
+.tariffPanel:active {
+  background: var(--buttonTertiaryHover);
+}
+
+.tariffPanel:focus-visible {
+  outline: 2px solid var(--borderFocus);
+  outline-offset: 2px;
+}
+
 .tariffPanel:hover .tariffDetailsButton,
-.tariffPanel:focus-within .tariffDetailsButton {
+.tariffPanel:focus-visible .tariffDetailsButton {
   opacity: 1;
-  pointer-events: auto;
 }
 
 .section {
