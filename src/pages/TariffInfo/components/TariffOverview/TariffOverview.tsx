@@ -1,5 +1,5 @@
-import { useCallback, useState, type FormEvent } from "react";
-import { Button, Chips, Col, Icon, Popover, Row, Text, Title } from "@sber-orm/ui-kit";
+import { useCallback, useState, type FormEvent, type KeyboardEvent } from "react";
+import { Button, Chips, Col, Popover, Row, Text, Title } from "@sber-orm/ui-kit";
 import { useTranslation } from "react-i18next";
 import type { FeedbackId, ModuleId, TariffContract } from "@/@types/tariff";
 import { TariffDetailsModal } from "@/pages/TariffInfo/components/TariffDetailsModal";
@@ -27,6 +27,16 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
     [],
   );
   const closePopover = useCallback(() => setPopover(null), []);
+  const openTariffDetails = useCallback(() => setTariffDetailsOpen(true), []);
+  const handleTariffCardKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLElement>) => {
+      if (event.target !== event.currentTarget) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      openTariffDetails();
+    },
+    [openTariffDetails],
+  );
   const handleServiceAction = useCallback(() => {
     onFeedback("service_opened");
     setPopover(null);
@@ -52,31 +62,39 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
         </Row>
         <Row gutter={16} align="stretch" wrap className={classes.summaryGrid}>
           <Col className={classes.summaryColumn}>
-            <Button
-              variant="function"
-              fullWidth
+            <Row
+              direction="column"
+              gutter={12}
+              align="stretch"
               className={`${classes.summaryPanel} ${classes.tariffPanel}`}
+              role="button"
+              tabIndex={0}
               aria-label={t("summary.tariffDetails", { tariff: contract.tariffName })}
-              onClick={() => setTariffDetailsOpen(true)}
+              onClick={openTariffDetails}
+              onKeyDown={handleTariffCardKeyDown}
             >
-              <Row direction="column" gutter={12} align="stretch" className={classes.tariffPanelContent}>
               <Row justify="between" gutter={16} align="bottom">
                 <Row direction="column" gutter={4} align="stretch">
                   <Text size="sm" className={classes.label}>{t("summary.tariff")}</Text>
                   <Title size="H500">{contract.tariffName}</Title>
                 </Row>
-                <Row noFlex align="middle" justify="center"
+                <Button
+                  size="XXS"
+                  variant="ellipse"
+                  icon="next"
+                  iconOnly
                   className={classes.tariffDetailsButton}
-                  aria-hidden
-                >
-                  <Icon name="next" width={20} height={20} />
-                </Row>
+                  aria-label={t("summary.tariffDetails", { tariff: contract.tariffName })}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    openTariffDetails();
+                  }}
+                />
               </Row>
               <Text size="sm" className={classes.label}>
                 {contract.startsAt}–{contract.endsAt}
               </Text>
-              </Row>
-            </Button>
+            </Row>
           </Col>
           <Col className={classes.summaryColumn}>
             <Row direction="column" gutter={12} align="stretch" className={classes.summaryPanel}>
