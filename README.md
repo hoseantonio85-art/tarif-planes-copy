@@ -35,5 +35,6 @@ npm run test
 npm run build
 ```
 
-Локальный standalone `BrowserRouter` намеренно не добавлен: экран должен
-проверяться в корневой Single-SPA-обвязке так же, как `risks` и `measures`.
+Отдельный standalone-entrypoint намеренно не добавлен. Внутренний
+`BrowserRouter` использует `baseUrl$.default`, как в `risks` и `measures`, а
+экран проверяется внутри корневой Single-SPA-обвязки.

@@ -1,4 +1,10 @@
-import { useCallback, useState, type FormEvent, type KeyboardEvent } from "react";
+import {
+  useCallback,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+  type MouseEvent,
+} from "react";
 import { Button, Chips, Col, Popover, Row, Text, Title } from "@sber-orm/ui-kit";
 import { useTranslation } from "react-i18next";
 import type { FeedbackId, ModuleId, TariffContract } from "@/@types/tariff";
@@ -28,6 +34,14 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
   );
   const closePopover = useCallback(() => setPopover(null), []);
   const openTariffDetails = useCallback(() => setTariffDetailsOpen(true), []);
+  const closeTariffDetails = useCallback(() => setTariffDetailsOpen(false), []);
+  const handleTariffDetailsButtonClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      openTariffDetails();
+    },
+    [openTariffDetails],
+  );
   const handleTariffCardKeyDown = useCallback(
     (event: KeyboardEvent<HTMLElement>) => {
       if (event.target !== event.currentTarget) return;
@@ -85,10 +99,7 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
                   iconOnly
                   className={classes.tariffDetailsButton}
                   aria-label={t("summary.tariffDetails", { tariff: contract.tariffName })}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    openTariffDetails();
-                  }}
+                  onClick={handleTariffDetailsButtonClick}
                 />
               </Row>
               <Text size="sm" className={classes.label}>
@@ -227,7 +238,7 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
       <TariffDetailsModal
         contract={contract}
         open={tariffDetailsOpen}
-        onClose={() => setTariffDetailsOpen(false)}
+        onClose={closeTariffDetails}
       />
     </Row>
   );
