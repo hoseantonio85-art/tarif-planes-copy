@@ -33,7 +33,7 @@ export const TariffDetailsModal = ({ contract, open, onClose }: TariffDetailsMod
       <ModalBody className={classes.body}>
         <Row direction="column" gutter={16} align="stretch">
           <Row direction="column" gutter={8} align="stretch">
-            <Title size="H700">«{contract.tariffName}»</Title>
+            <Title size="H900" className={classes.tariffName}>«{contract.tariffName}»</Title>
             <Text size="md" className={classes.description}>{contract.description}</Text>
           </Row>
           <div className={classes.divider} />
@@ -42,9 +42,9 @@ export const TariffDetailsModal = ({ contract, open, onClose }: TariffDetailsMod
             <Text size="md">{t("modal.aiIntro")}</Text>
             <Row direction="column" gutter={12} align="stretch">
               {contract.details.aiSolutions.map((solution) => (
-                <Row key={solution.id} gutter={10} align="top" className={classes.solution}>
+                <Row key={solution.id} gutter={12} align="top" className={classes.solution}>
                   <Row noFlex justify="center" align="middle" className={classes.check} aria-hidden>
-                    <Icon name="check" width={14} height={14} />
+                    <Icon name="check" width={20} height={20} />
                   </Row>
                   <Text size="md">
                     <strong>{solution.title}:</strong> {solution.description}

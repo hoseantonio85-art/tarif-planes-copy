@@ -104,11 +104,12 @@ const TariffInfo = () => {
           <TariffOverview contract={model.contract} onFeedback={showFeedback} />
 
           <Row direction="column" gutter={24} align="stretch" className={classes.usersSection}>
-            <Row align="middle" noFlex>
-              <Title size="H500">
+            <Row gutter={8} align="middle" noFlex>
+              <Title size="H500">{t("users.title")}</Title>
+              <Title size="H500" className={classes.sectionCount}>
                 {t(model.contract.maxPaidUsers === null
-                  ? "users.titleUnlimited"
-                  : "users.titleWithLimit", {
+                  ? "users.countUnlimited"
+                  : "users.countWithLimit", {
                 active: model.activePaidUsers,
                 max: model.contract.maxPaidUsers,
               })}

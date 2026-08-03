@@ -48,8 +48,9 @@ const tariff = {
     notIncludedAction: "Не входит в договор",
   },
   users: {
-    titleWithLimit: "Активных пользователей: {{active}} из {{max}}",
-    titleUnlimited: "Активных пользователей: {{active}}",
+    title: "Активных пользователей:",
+    countWithLimit: "{{active}} из {{max}}",
+    countUnlimited: "{{active}}",
     tariff: "в тарифе",
     notBillable: "не тарифицируется",
     stale: "Давно не заходил",
