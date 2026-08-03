@@ -53,22 +53,24 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
         <Row gutter={16} align="stretch" wrap className={classes.summaryGrid}>
           <Col className={classes.summaryColumn}>
             <Row direction="column" gutter={12} align="stretch" className={`${classes.summaryPanel} ${classes.tariffPanel}`}>
-              <Row direction="column" gutter={4} align="stretch">
-                <Text size="sm" className={classes.label}>{t("summary.tariff")}</Text>
-                <Title size="H500">{contract.tariffName}</Title>
+              <Row justify="between" gutter={16} align="bottom">
+                <Row direction="column" gutter={4} align="stretch">
+                  <Text size="sm" className={classes.label}>{t("summary.tariff")}</Text>
+                  <Title size="H500">{contract.tariffName}</Title>
+                </Row>
+                <Button
+                  size="XXS"
+                  variant="ellipse"
+                  icon="next"
+                  iconOnly
+                  className={classes.tariffDetailsButton}
+                  aria-label={t("summary.tariffDetails", { tariff: contract.tariffName })}
+                  onClick={() => setTariffDetailsOpen(true)}
+                />
               </Row>
               <Text size="sm" className={classes.label}>
                 {contract.startsAt}–{contract.endsAt}
               </Text>
-              <Button
-                size="XXS"
-                variant="ellipse"
-                icon="next"
-                iconOnly
-                className={classes.tariffDetailsButton}
-                aria-label={t("summary.tariffDetails", { tariff: contract.tariffName })}
-                onClick={() => setTariffDetailsOpen(true)}
-              />
             </Row>
           </Col>
           <Col className={classes.summaryColumn}>
