@@ -51,11 +51,8 @@
 }
 
 .tariffDetailsButton {
-  position: absolute;
-  top: 50%;
-  right: 16px;
+  flex: 0 0 auto;
   opacity: 0;
-  transform: translateY(-50%);
   pointer-events: none;
   transition: opacity 160ms ease;
 }
