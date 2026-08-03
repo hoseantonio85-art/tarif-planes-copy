@@ -1,5 +1,5 @@
 import { useCallback, useState, type FormEvent } from "react";
-import { Button, Chips, Col, Popover, Row, Text, Title } from "@sber-orm/ui-kit";
+import { Button, Chips, Col, Icon, Popover, Row, Text, Title } from "@sber-orm/ui-kit";
 import { useTranslation } from "react-i18next";
 import type { FeedbackId, ModuleId, TariffContract } from "@/@types/tariff";
 import { TariffDetailsModal } from "@/pages/TariffInfo/components/TariffDetailsModal";
@@ -52,26 +52,31 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
         </Row>
         <Row gutter={16} align="stretch" wrap className={classes.summaryGrid}>
           <Col className={classes.summaryColumn}>
-            <Row direction="column" gutter={12} align="stretch" className={`${classes.summaryPanel} ${classes.tariffPanel}`}>
+            <Button
+              variant="function"
+              fullWidth
+              className={`${classes.summaryPanel} ${classes.tariffPanel}`}
+              aria-label={t("summary.tariffDetails", { tariff: contract.tariffName })}
+              onClick={() => setTariffDetailsOpen(true)}
+            >
+              <Row direction="column" gutter={12} align="stretch" className={classes.tariffPanelContent}>
               <Row justify="between" gutter={16} align="bottom">
                 <Row direction="column" gutter={4} align="stretch">
                   <Text size="sm" className={classes.label}>{t("summary.tariff")}</Text>
                   <Title size="H500">{contract.tariffName}</Title>
                 </Row>
-                <Button
-                  size="XXS"
-                  variant="ellipse"
-                  icon="next"
-                  iconOnly
+                <Row noFlex align="middle" justify="center"
                   className={classes.tariffDetailsButton}
-                  aria-label={t("summary.tariffDetails", { tariff: contract.tariffName })}
-                  onClick={() => setTariffDetailsOpen(true)}
-                />
+                  aria-hidden
+                >
+                  <Icon name="next" width={20} height={20} />
+                </Row>
               </Row>
               <Text size="sm" className={classes.label}>
                 {contract.startsAt}–{contract.endsAt}
               </Text>
-            </Row>
+              </Row>
+            </Button>
           </Col>
           <Col className={classes.summaryColumn}>
             <Row direction="column" gutter={12} align="stretch" className={classes.summaryPanel}>
