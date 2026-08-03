@@ -44,8 +44,8 @@ const TariffInfo = () => {
     t("page.title");
 
   useEffect(() => {
-    if (feedback !== "activated") return;
-    notification(t("feedback.activated"), { type: "success" });
+    if (feedback !== "activated" && feedback !== "deactivated") return;
+    notification(t(`feedback.${feedback}`), { type: "success" });
     clearFeedback();
   }, [clearFeedback, feedback, t]);
 
@@ -93,7 +93,7 @@ const TariffInfo = () => {
             <FullWidthAlert status="info" message={t("system.refreshing")} />
           )}
 
-          {feedback && feedback !== "activated" && (
+          {feedback && feedback !== "activated" && feedback !== "deactivated" && (
             <FullWidthAlert
               status="success"
               message={t(`feedback.${feedback}`)}
@@ -104,10 +104,11 @@ const TariffInfo = () => {
           <TariffOverview contract={model.contract} onFeedback={showFeedback} />
 
           <Row direction="column" gutter={24} align="stretch" className={classes.usersSection}>
-            <Row gutter={8} align="middle" noFlex>
-              <Title size="H500">{t("users.title")}</Title>
-              <Title size="H500" className={classes.sectionCount}>
-                {t("users.count", {
+            <Row align="middle" noFlex>
+              <Title size="H500">
+                {t(model.contract.maxPaidUsers === null
+                  ? "users.titleUnlimited"
+                  : "users.titleWithLimit", {
                 active: model.activePaidUsers,
                 max: model.contract.maxPaidUsers,
               })}

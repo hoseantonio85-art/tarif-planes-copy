@@ -1,0 +1,36 @@
+.body {
+  padding-top: 8px;
+}
+
+.description {
+  color: var(--textBaseSecondary);
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--borderDefault);
+}
+
+.solution {
+  min-width: 0;
+}
+
+.solution > :last-child {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--backgroundLightSuccessLight);
+  color: var(--iconAccentSuccess);
+}
+
+@media (max-width: 760px) {
+  .body {
+    padding-top: 0;
+  }
+}

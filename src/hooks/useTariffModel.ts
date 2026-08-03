@@ -6,6 +6,7 @@ import type {
   QuickFilter,
   RoleId,
   SystemAccessState,
+  TariffCode,
 } from "@/@types/tariff";
 import { ROLE_IDS } from "@/@types/tariff";
 import { createTariffFixture, SCENARIO_NOW } from "@/data/tariffFixtures";
@@ -38,6 +39,7 @@ const getInitialScenario = () => {
   const params = new URLSearchParams(window.location.search);
   const access = params.get("access") as SystemAccessState | null;
   const scenario = params.get("scenario");
+  const tariffCode: TariffCode = params.get("tariff") === "premium" ? "premium" : "basic";
 
   return {
     accessState: access && ACCESS_STATES.includes(access) ? access : "active",
@@ -46,6 +48,7 @@ const getInitialScenario = () => {
     isLoading: scenario === "loading",
     isRefreshing: scenario === "refreshing",
     limitReached: scenario === "limit",
+    tariffCode,
   } satisfies {
     accessState: SystemAccessState;
     permissionMode: PermissionMode;
@@ -53,15 +56,16 @@ const getInitialScenario = () => {
     isLoading: boolean;
     isRefreshing: boolean;
     limitReached: boolean;
+    tariffCode: TariffCode;
   };
 };
 
 export const useTariffModel = () => {
   const scenario = useMemo(getInitialScenario, []);
   const contract = useMemo(() => {
-    const fixture = createTariffFixture(scenario.limitReached);
+    const fixture = createTariffFixture(scenario.limitReached, scenario.tariffCode);
     return scenario.emptyUsers ? { ...fixture, users: [] } : fixture;
-  }, [scenario.emptyUsers, scenario.limitReached]);
+  }, [scenario.emptyUsers, scenario.limitReached, scenario.tariffCode]);
   const [users, setUsers] = useState(contract.users);
   const [accessState, setAccessState] = useState<SystemAccessState>(scenario.accessState);
   const [quickFilter, setQuickFilter] = useState<QuickFilter>("all");

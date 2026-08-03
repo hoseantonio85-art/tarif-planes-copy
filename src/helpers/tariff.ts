@@ -42,10 +42,12 @@ export const getActivePaidUsersCount = (users: TariffUser[]): number =>
 export const getActivationOutcome = (
   user: TariffUser,
   activePaidUsers: number,
-  maxPaidUsers: number,
+  maxPaidUsers: number | null,
 ): "activate" | "limit" => {
   const activatedUser = { ...user, status: "active" as const };
-  return consumesPaidSlot(activatedUser) && activePaidUsers >= maxPaidUsers
+  return maxPaidUsers !== null &&
+    consumesPaidSlot(activatedUser) &&
+    activePaidUsers >= maxPaidUsers
     ? "limit"
     : "activate";
 };
@@ -119,7 +121,7 @@ export const filterUsers = (
       const matchesQuick =
         quickFilter === "all" ||
         (quickFilter === "in_tariff" && isPaidUser(user)) ||
-        (quickFilter === "out_of_tariff" && !isPaidUser(user));
+        (quickFilter === "not_billable" && !isPaidUser(user));
       const matchesStatus = filters.status === "all" || user.status === filters.status;
       const matchesRole =
         filters.roleId === "all" || user.roleIds.includes(filters.roleId);

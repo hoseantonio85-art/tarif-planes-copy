@@ -1,16 +1,17 @@
-import type { TariffContract } from "@/@types/tariff";
+import type { TariffCode, TariffContract, TariffDetails } from "@/@types/tariff";
 
 export const SCENARIO_NOW = "2026-03-05T12:00:00.000Z";
 
-const contractFixture: TariffContract = {
-  description:
-    "Полный доступ ко всем разделам НОРМа и аналитике без ограничений, неограниченное использование AI-решений.",
-  tariffName: "Премиум",
+type ContractFixtureBase = Omit<
+  TariffContract,
+  "tariffCode" | "tariffName" | "description" | "maxPaidUsers" | "details"
+>;
+
+const contractFixture: ContractFixtureBase = {
   startsAt: "01.02.2026",
   endsAt: "31.12.2026",
   contractStatus: "active",
   contractNumber: "452-26",
-  maxPaidUsers: 4,
   companies: [
     { id: "petr", name: "ООО СК Пётр и ученики", current: true },
     { id: "volga", name: "АО Финансовая группа «Волга»" },
@@ -50,14 +51,14 @@ const contractFixture: TariffContract = {
       description:
         "В этом разделе собраны дашборды и таблицы со сводной информацией по всем данным системы, которые можно скачать в удобном формате. Здесь можно отслеживать ключевые показатели, тренды и общую картину для принятия управленческих решений.",
       includedInContract: true,
-      roleAvailable: false,
+      roleAvailable: true,
     },
     {
       id: "ai_assessment",
       name: "Оценка ИИ-решений",
       description:
         "В данном разделе можно получить подробную оценку рисков внедряемого в компанию ИИ-решения (ИИ-агента или LLM-приложения) и рекомендации по их снижению.",
-      includedInContract: false,
+      includedInContract: true,
       roleAvailable: true,
     },
     {
@@ -65,7 +66,7 @@ const contractFixture: TariffContract = {
       name: "Поведенческие риски",
       description:
         "В этом разделе оценивается поведение продукта на предмет недобросовестных практик на ранних стадиях разработки или при внесении изменений. Здесь выявляются потенциальные риски, связанные с действиями продукта, чтобы своевременно их обнаружить и предотвратить до вывода на рынок.",
-      includedInContract: false,
+      includedInContract: true,
       roleAvailable: true,
     },
     {
@@ -73,7 +74,7 @@ const contractFixture: TariffContract = {
       name: "Контрагенты",
       description:
         "Здесь проводится анализ рисков, связанных с контрагентами, условиями договора и дебиторской задолженностью.",
-      includedInContract: false,
+      includedInContract: true,
       roleAvailable: true,
     },
     {
@@ -81,7 +82,7 @@ const contractFixture: TariffContract = {
       name: "AI-мониторинг",
       description:
         "В этом разделе собираются новости из СМИ и изменения в законодательстве, которые могут повлиять на компанию и привести к появлению новых рисков, а также предлагаются рекомендации по мерам для выявленных угроз.",
-      includedInContract: false,
+      includedInContract: true,
       roleAvailable: true,
     },
     {
@@ -89,7 +90,7 @@ const contractFixture: TariffContract = {
       name: "Лимитная кампания",
       description:
         "В этом разделе проводится согласование лимитов по рискам в рамках лимитной кампании и ребаджета.",
-      includedInContract: false,
+      includedInContract: true,
       roleAvailable: true,
     },
     {
@@ -97,7 +98,7 @@ const contractFixture: TariffContract = {
       name: "База знаний",
       description:
         "Это централизованное хранилище документов компании, которые могут использоваться для оценки операционных рисков и консультаций по управлению рисками. Здесь можно загрузить файлы с информацией, которую система должна учитывать при анализе рисков.",
-      includedInContract: false,
+      includedInContract: true,
       roleAvailable: true,
     },
   ],
@@ -169,11 +170,76 @@ const contractFixture: TariffContract = {
   ],
 };
 
-export const createTariffFixture = (limitReached: boolean): TariffContract => ({
+const AI_SOLUTIONS: TariffDetails["aiSolutions"] = [
+  {
+    id: "assistant",
+    title: "Цифровой помощник",
+    description: "для консультаций и автоматизации процесса регистрации событий.",
+  },
+  {
+    id: "analyst",
+    title: "AI-агент «Аналитик»",
+    description: "глубоко анализирует накопленные данные по событиям, примененным мерам и динамике рисков.",
+  },
+  {
+    id: "methodologist",
+    title: "AI-агент «Методолог»",
+    description: "помогает ответить на вопросы о внутренних стандартах и нормативных документах компании.",
+  },
+  {
+    id: "assessment",
+    title: "AI-агенты «Оценка рисков», «Оценка ИИ-решений», «Оценка рисков поведения»",
+    description: "оценивают ситуацию и предлагают оптимальные шаги для минимизации ущерба.",
+  },
+];
+
+const TARIFF_CONTENT: Record<TariffCode, Pick<TariffContract, "tariffCode" | "tariffName" | "description" | "maxPaidUsers" | "details">> = {
+  basic: {
+    tariffCode: "basic",
+    tariffName: "Базовый",
+    description: "Доступ к основным разделам НОРМа и базовой аналитике, использование AI-решений в рамках установленного лимита",
+    maxPaidUsers: 4,
+    details: {
+      userTerms: "В тариф включено не более 5 пользователей. При необходимости возможно приобрести дополнительный пакет ролей.",
+      aiSolutions: AI_SOLUTIONS,
+      support: "Тариф предусматривает базовую поддержку пользователей.",
+    },
+  },
+  premium: {
+    tariffCode: "premium",
+    tariffName: "Премиум",
+    description: "Полный доступ ко всем разделам НОРМа и аналитике без ограничений, неограниченное использование AI-решений",
+    maxPaidUsers: null,
+    details: {
+      userTerms: "Неограниченное количество пользователей.",
+      aiSolutions: AI_SOLUTIONS,
+      support: "Данный тариф предусматривает поддержку пользователей.",
+    },
+  },
+};
+
+export const createTariffFixture = (
+  limitReached: boolean,
+  tariffCode: TariffCode = "basic",
+): TariffContract => ({
   ...contractFixture,
-  maxPaidUsers: limitReached ? 2 : contractFixture.maxPaidUsers,
+  ...TARIFF_CONTENT[tariffCode],
+  maxPaidUsers:
+    tariffCode === "basic" && limitReached
+      ? 2
+      : TARIFF_CONTENT[tariffCode].maxPaidUsers,
+  details: {
+    ...TARIFF_CONTENT[tariffCode].details,
+    aiSolutions: TARIFF_CONTENT[tariffCode].details.aiSolutions.map((solution) => ({
+      ...solution,
+    })),
+  },
   companies: contractFixture.companies.map((company) => ({ ...company })),
-  modules: contractFixture.modules.map((module) => ({ ...module })),
+  modules: contractFixture.modules.map((module) => ({
+    ...module,
+    includedInContract: true,
+    roleAvailable: true,
+  })),
   users: contractFixture.users.map((user) => ({
     ...user,
     roleIds: [...user.roleIds],

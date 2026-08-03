@@ -97,7 +97,7 @@ const UserRow = ({ user, permissionMode, onStatusChange }: UserRowProps) => {
         <Row gutter={16} justify="between" align="middle" className={classes.details}>
           <Row noFlex justify="end" className={classes.badgeSlot}>
             <Badge variant={paid ? "violet" : "gray"}>
-              {paid ? t("users.tariff") : t("users.guest")}
+              {paid ? t("users.tariff") : t("users.notBillable")}
             </Badge>
           </Row>
           <Text size="sm" className={stale ? classes.staleDate : classes.date}>
