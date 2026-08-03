@@ -6,6 +6,10 @@
   color: var(--textBaseSecondary);
 }
 
+.tariffName {
+  font-weight: 500;
+}
+
 .divider {
   width: 100%;
   height: 1px;
@@ -24,6 +28,7 @@
 .check {
   width: 24px;
   height: 24px;
+  flex: 0 0 24px;
   border-radius: 50%;
   background: var(--backgroundLightSuccessLight);
   color: var(--iconAccentSuccess);
