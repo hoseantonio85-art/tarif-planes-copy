@@ -44,7 +44,7 @@ export const TariffDetailsModal = ({ contract, open, onClose }: TariffDetailsMod
               {contract.details.aiSolutions.map((solution) => (
                 <Row key={solution.id} gutter={12} align="top" className={classes.solution}>
                   <Row noFlex justify="center" align="middle" className={classes.check} aria-hidden>
-                    <Icon name="check" width={20} height={20} />
+                    <Icon name="check" width={16} height={16} />
                   </Row>
                   <Text size="md">
                     <strong>{solution.title}:</strong> {solution.description}
