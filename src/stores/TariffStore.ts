@@ -7,6 +7,7 @@ import type {
   RoleId,
   SystemAccessState,
   TariffContract,
+  TariffCode,
   TariffUser,
 } from "@/@types/tariff";
 import { ROLE_IDS } from "@/@types/tariff";
@@ -43,7 +44,7 @@ export const TariffStore = types
     isLoading: false,
     isRefreshing: false,
     quickFilter: types.optional(
-      types.enumeration<QuickFilter>(["all", "in_tariff", "out_of_tariff"]),
+      types.enumeration<QuickFilter>(["all", "in_tariff", "not_billable"]),
       "all",
     ),
     searchOpen: false,
@@ -187,7 +188,8 @@ export const createInitialTariffStoreSnapshot = (
   const requestedAccess = params.get("access") as SystemAccessState | null;
   const scenario = params.get("scenario");
   const limitReached = scenario === "limit";
-  const fixture = createTariffFixture(limitReached);
+  const tariffCode: TariffCode = params.get("tariff") === "premium" ? "premium" : "basic";
+  const fixture = createTariffFixture(limitReached, tariffCode);
   const { users, ...contractData } = fixture;
 
   return {

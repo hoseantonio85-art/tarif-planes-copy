@@ -12,8 +12,7 @@
   transition: background-color 160ms ease;
 }
 
-.userRow:hover,
-.userRow:focus-within {
+.userRow:hover {
   background: var(--surfaceSecondaryDefault);
 }
 
@@ -142,7 +141,7 @@
 }
 
 .userRow:hover .emailActions,
-.userRow:focus-within .emailActions {
+.emailActions:has(:focus-visible) {
   opacity: 1;
   pointer-events: auto;
 }

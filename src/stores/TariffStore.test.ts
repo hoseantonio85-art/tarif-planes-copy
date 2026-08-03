@@ -45,7 +45,7 @@ describe("TariffStore", () => {
     expect(store.feedback).toBe("activated");
   });
 
-  it("activates a guest without consuming a tariff slot", () => {
+  it("activates a non-billable user without consuming a tariff slot", () => {
     const store = createTariffStore("?scenario=limit");
     const activePaidUsers = store.activePaidUsers;
 
@@ -55,6 +55,16 @@ describe("TariffStore", () => {
       "active",
     );
     expect(store.activePaidUsers).toBe(activePaidUsers);
+    expect(store.limitWarning).toBe(false);
+  });
+
+  it("does not limit paid users on Premium", () => {
+    const store = createTariffStore("?tariff=premium&scenario=limit");
+
+    store.requestUserStatusChange("elena");
+
+    expect(store.contract.maxPaidUsers).toBeNull();
+    expect(store.contract.users.find((user) => user.id === "elena")?.status).toBe("active");
     expect(store.limitWarning).toBe(false);
   });
 

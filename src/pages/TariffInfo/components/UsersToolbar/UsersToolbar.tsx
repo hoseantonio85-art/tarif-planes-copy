@@ -57,7 +57,7 @@ export const UsersToolbar = ({
     () => [
       { id: "all", title: t("toolbar.all") },
       { id: "in_tariff", title: t("toolbar.tariff") },
-      { id: "out_of_tariff", title: t("toolbar.guest") },
+      { id: "not_billable", title: t("toolbar.notBillable") },
     ],
     [t],
   );

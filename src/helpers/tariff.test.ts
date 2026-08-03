@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { AppliedUserFilters, TariffUser } from "@/@types/tariff";
+import { createTariffFixture } from "@/data/tariffFixtures";
 import {
   createUserSearchDocuments,
   filterUsers,
@@ -55,6 +56,16 @@ const filters: AppliedUserFilters = {
 };
 
 describe("tariff selectors", () => {
+  it("provides all modules for both tariffs and keeps Premium unlimited", () => {
+    const basic = createTariffFixture(false, "basic");
+    const premium = createTariffFixture(false, "premium");
+
+    expect(basic.modules.every((module) => module.includedInContract && module.roleAvailable)).toBe(true);
+    expect(premium.modules.every((module) => module.includedInContract && module.roleAvailable)).toBe(true);
+    expect(basic.maxPaidUsers).toBe(4);
+    expect(premium.maxPaidUsers).toBeNull();
+  });
+
   it("treats only risk managers and coordinators as paid users", () => {
     expect(isPaidUser(users[0])).toBe(true);
     expect(isPaidUser(users[1])).toBe(false);
@@ -83,7 +94,7 @@ describe("tariff selectors", () => {
   it("searches by user fields while filtering roles by stable ids", () => {
     const documents = createUserSearchDocuments(users);
     expect(filterUsers(documents, "анна", [], "all", filters, "2026-03-05")).toHaveLength(1);
-    expect(filterUsers(documents, "oleg@", [], "out_of_tariff", filters, "2026-03-05")[0].id).toBe("non-paid");
+    expect(filterUsers(documents, "oleg@", [], "not_billable", filters, "2026-03-05")[0].id).toBe("non-paid");
     expect(
       filterUsers(
         documents,
@@ -111,6 +122,7 @@ describe("tariff selectors", () => {
     expect(
       getActivationOutcome({ ...users[1], status: "deactivated" }, 2, 2),
     ).toBe("activate");
+    expect(getActivationOutcome(users[2], 200, null)).toBe("activate");
   });
 
   it("updates status without removing the user or mutating the source", () => {

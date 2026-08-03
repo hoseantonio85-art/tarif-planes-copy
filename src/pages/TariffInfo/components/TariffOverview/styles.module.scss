@@ -21,6 +21,7 @@
 }
 
 .summaryPanel {
+  position: relative;
   box-sizing: border-box;
   min-height: 100px;
   padding: 16px;
@@ -40,21 +41,29 @@
   color: var(--textTechSuccess);
 }
 
-.summaryCard .description,
 .section .sectionCount {
   color: var(--textBaseSecondary);
-}
-
-.description {
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .modulePopover {
   width: 304px;
   padding-top: 8px;
+}
+
+.tariffDetailsButton {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  opacity: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.tariffPanel:hover .tariffDetailsButton,
+.tariffPanel:focus-within .tariffDetailsButton {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .moduleGroupLabel {

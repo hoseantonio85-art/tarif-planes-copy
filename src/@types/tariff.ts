@@ -9,7 +9,8 @@ export const ROLE_IDS = [
 export type RoleId = (typeof ROLE_IDS)[number];
 
 export type UserStatus = "active" | "deactivated";
-export type QuickFilter = "all" | "in_tariff" | "out_of_tariff";
+export type QuickFilter = "all" | "in_tariff" | "not_billable";
+export type TariffCode = "basic" | "premium";
 export type PermissionMode = "edit" | "view";
 export type SystemAccessState =
   | "active"
@@ -52,14 +53,28 @@ export interface TariffUser {
   lastLogin: string;
 }
 
+export interface TariffAiSolution {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface TariffDetails {
+  userTerms: string;
+  aiSolutions: TariffAiSolution[];
+  support: string;
+}
+
 export interface TariffContract {
+  tariffCode: TariffCode;
   description: string;
   tariffName: string;
   startsAt: string;
   endsAt: string;
   contractStatus: "active";
   contractNumber: string;
-  maxPaidUsers: number;
+  maxPaidUsers: number | null;
+  details: TariffDetails;
   companies: ContractCompany[];
   modules: TariffModule[];
   users: TariffUser[];

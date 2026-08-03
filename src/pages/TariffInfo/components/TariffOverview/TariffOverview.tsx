@@ -2,6 +2,7 @@ import { useCallback, useState, type FormEvent } from "react";
 import { Button, Chips, Col, Popover, Row, Text, Title } from "@sber-orm/ui-kit";
 import { useTranslation } from "react-i18next";
 import type { FeedbackId, ModuleId, TariffContract } from "@/@types/tariff";
+import { TariffDetailsModal } from "@/pages/TariffInfo/components/TariffDetailsModal";
 import classes from "./styles.module.scss";
 
 interface TariffOverviewProps {
@@ -17,6 +18,7 @@ interface ModulePopoverState {
 export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) => {
   const { t } = useTranslation("tariff");
   const [popover, setPopover] = useState<ModulePopoverState | null>(null);
+  const [tariffDetailsOpen, setTariffDetailsOpen] = useState(false);
 
   const handleModuleClick = useCallback(
     (moduleId: string, event: FormEvent<HTMLElement>) => {
@@ -47,11 +49,10 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
       <Row direction="column" gutter={24} align="stretch" className={classes.summaryCard}>
         <Row direction="column" gutter={4} align="top">
           <Title size="H500">{currentCompanyName}</Title>
-          <Text size="md" className={classes.description}>{contract.description}</Text>
         </Row>
         <Row gutter={16} align="stretch" wrap className={classes.summaryGrid}>
           <Col className={classes.summaryColumn}>
-            <Row direction="column" gutter={12} align="stretch" className={classes.summaryPanel}>
+            <Row direction="column" gutter={12} align="stretch" className={`${classes.summaryPanel} ${classes.tariffPanel}`}>
               <Row direction="column" gutter={4} align="stretch">
                 <Text size="sm" className={classes.label}>{t("summary.tariff")}</Text>
                 <Title size="H500">{contract.tariffName}</Title>
@@ -59,6 +60,15 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
               <Text size="sm" className={classes.label}>
                 {contract.startsAt}–{contract.endsAt}
               </Text>
+              <Button
+                size="XXS"
+                variant="ellipse"
+                icon="next"
+                iconOnly
+                className={classes.tariffDetailsButton}
+                aria-label={t("summary.tariffDetails", { tariff: contract.tariffName })}
+                onClick={() => setTariffDetailsOpen(true)}
+              />
             </Row>
           </Col>
           <Col className={classes.summaryColumn}>
@@ -128,23 +138,25 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
               ))}
             </Row>
           </Row>
-          <Row direction="column" gutter={8} align="stretch">
-            <Text size="sm" className={classes.moduleGroupLabel}>
-              {t("modules.excluded", { count: excludedModules.length })}
-            </Text>
-            <Row gutter={8} wrap>
-              {excludedModules.map((module) => (
-                <span key={module.id} className={classes.unavailableModuleChip}>
-                  <Chips
-                    size="XS"
-                    item={{ id: module.id, title: module.name }}
-                    variant="fill"
-                    onChange={handleModuleClick}
-                  />
-                </span>
-              ))}
+          {excludedModules.length > 0 && (
+            <Row direction="column" gutter={8} align="stretch">
+              <Text size="sm" className={classes.moduleGroupLabel}>
+                {t("modules.excluded", { count: excludedModules.length })}
+              </Text>
+              <Row gutter={8} wrap>
+                {excludedModules.map((module) => (
+                  <span key={module.id} className={classes.unavailableModuleChip}>
+                    <Chips
+                      size="XS"
+                      item={{ id: module.id, title: module.name }}
+                      variant="fill"
+                      onChange={handleModuleClick}
+                    />
+                  </span>
+                ))}
+              </Row>
             </Row>
-          </Row>
+          )}
         </Row>
       </Row>
 
@@ -187,6 +199,11 @@ export const TariffOverview = ({ contract, onFeedback }: TariffOverviewProps) =>
           </Row>
         </Popover>
       )}
+      <TariffDetailsModal
+        contract={contract}
+        open={tariffDetailsOpen}
+        onClose={() => setTariffDetailsOpen(false)}
+      />
     </Row>
   );
 };
